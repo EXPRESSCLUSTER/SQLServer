@@ -37,3 +37,13 @@
 ### Standby Node
 * Windows Server 2012 R2 Datacenter
 * SQL Server 2014 Enterprise
+
+## Prerequisites 
+
+## Create Base Cluster
+
+## Install SQL Server 2014
+
+
+
+
