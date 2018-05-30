@@ -1,4 +1,5 @@
 # SQL Server 2014 Log Shipping Cluster
+* [Evaluation Environment](#evaluation-environment)
 
 ## Evaluation Environment
 ```
@@ -28,6 +29,7 @@
 ```
 
 ### Active Directory
+* Windows Server 2012 R2 Datacenter
 ### Primary Nodes
 * Windows Server 2012 R2 Datacenter
 * SQL Server 2014 Enterprise
