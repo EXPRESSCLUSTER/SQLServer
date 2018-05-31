@@ -13,16 +13,14 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 
 ### System Environment
 - Server spec  
-	```bat
-	Mem: 4GB
-	CPU Core: 2 for 1 Socket
-	Disk: 20GB
-	OS: Cent 7.4 (3.10.0-693.21.1.el7.x86_64)
+	- Mem: 4GB
+	- CPU Core: 2 for 1 Socket
+	- Disk: 20GB
+	- OS: Cent 7.4 (3.10.0-693.21.1.el7.x86_64)
 	```
 - Software versions  
-	```bat
-	MSSQL for Linux 2017
-	EXPRESSCLUSTER X 3.3.5-1
+	- MS SQL Server 2017 on Linux
+	- EXPRESSCLUSTER X 3.3.5-1
 	```
 
 ## Cluster Overview
