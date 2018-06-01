@@ -1,6 +1,6 @@
 # SQL Server 2016 Reporting Service clustere
 ## About This Guide
-This guide provides how to integrate SQL Server 2016 Reporting Service (SSRS) with EXPRESSCLUSTER X and create SSRS cluster.
+This guide provides how to integrate MS SQL Server 2016 Reporting Service (SSRS) with EXPRESSCLUSTER X and create SSRS cluster.
 The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup skills.
 
 ## System Overiew
@@ -11,11 +11,11 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 - At least 2 partitions are required on the shared storage.
   - One is for DBs and its volume size depends on DB sizing.
   - Other is for Disk NP and its volume size is 17MB.
-- SQL Server 2014 are required for both servers.
+- SQL Server 2016 are required for both servers.
 
 ### System Configuration
-- OS: Windows Server 2016 Standard
-- SQL Server: MS SQL Server 2016 Standard
+- OS: Windows Server 2016 Standard Edition
+- SQL Server: SQL Server 2016 Standard Edition
 - EXPRESSCLUSTER X: 3.3 or 4.0
 
 ```bat
@@ -40,7 +40,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 ## System setup
 ### Basic cluster setup
 #### On Primary and Secondary servers  
-1. Install EXPRESSCLUSTER (ECX)  
+1. Install EXPRESSCLUSTER X (ECX)  
 2. Register ECX licenses  
 
 #### On Primary server  
@@ -69,7 +69,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 6. Move group to Secondary server
 
 #### On Secondary server
-7. Install MSSQL Server  
+7. Install SQL Server  
 	- Feature Rules:  
 		Select "Database Engine Services" and "Reporting service-Native"
 	- Instance Configuration:  
@@ -86,7 +86,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 ### SSRS Setup
 #### On Primary server
 9. Start SQL Server service and Reporting Services service
-10. Start Reporting Service Configuration Manager and connect to the MSSQL Server instance  
+10. Start Reporting Service Configuration Manager and connect to the SQL Server instance  
 	- Service Account:  
 		Apply the default settings  
 	- Web Service URL:  
@@ -111,12 +111,12 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 14. Start SQL Server service and Reporting Services service  
 15. Copy Reporting Service parameter in config file from Primary Server to Secondary server.  
 	- Config file path:  
-		\<MSSQL Server installation path\>\MSRS13.MSSQLSERVER\Reporting Services\ReportServer
+		\<SQL Server installation path\>\MSRS13.MSSQLSERVER\Reporting Services\ReportServer
 	- Config file name:  
 		rsreportserver.config  
 	- Target parameter:  
 		Installation ID
-16. Start Reporting Service Configuration Manager and connect to the MSSQL Server instance  
+16. Start Reporting Service Configuration Manager and connect to the SQL Server instance  
 	- Service Account:  
 		Apply the default settings  
 	- Web Service URL:  
@@ -150,7 +150,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Target service: SQL Server Reporting Services  
 		Start/Stop:  synchronous
 	- script:  
-		start.bat:  Refer the appendix sample script.  
+		start.bat:  Refer [Appendix Sample script](https://github.com/EXPRESSCLUSTER/SQLServer/blob/master/SQLserver2016SSRS.md#sample-scripts).  
 		stop.bat:  No need to set.
 		Start/Stop:  synchronous
 21. Change resource dependency as the below:  
