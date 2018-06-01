@@ -44,7 +44,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 2. Register ECX licenses  
 
 #### On Primary server  
-3. Create a cluster and a failover group  
+3. Create a cluster and a failover group.  
 	- NP:
 		Disk NP
 	- Group:  
@@ -52,62 +52,62 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 	- Resource:  
 		fip  
 		sd
-4. Start group on Primary server  
+4. Start group on Primary server.  
 
 ### SQL Server and SSRS installation
 #### On Primary server
 5. Install SQL Server  
 	- Feature Rules:  
-		Select "Database Engine Services" and "Reporting service-Native"
+		Select "Database Engine Services" and "Reporting service-Native".
 	- Server Configuraiton:  
 		Set "Manual" for service startup tyeps which will be clustered.  
 		(e.g. SQL Server Database Engine and SQL Server Agent)
 	- Database Engine Configuration:  
-		- Add an account which will be used from both Primary and Secondary server  
+		- Add an account which is available on both Primary and Secondary server.  
 			(e.g. domain user for Windows authentication or sa account for SQL authentication)  
-		- Set [folder path which is created under sd resource Switching Partition] for Data Root Directory
-6. Move group to Secondary server
+		- Set \<folder path which is created under sd resource Switching Partition\> for Data Root Directory.
+6. Move group to Secondary server.
 
 #### On Secondary server
 7. Install SQL Server  
 	- Feature Rules:  
-		Select "Database Engine Services" and "Reporting service-Native"
+		Select "Database Engine Services" and "Reporting service-Native".
 	- Instance Configuration:  
-		Set the same name and instance ID for the instance as Primary server
+		Set the same name and instance ID for the instance as Primary server.
 	- Server Configuraiton:  
 		Set Manual startup for services which will be clustered.  
 		(e.g. SQL Server Database Engine and SQL Server Agent)
 	- Database Engine Configuration:  
 		- Add the same account as added to Primary SQL Server in Step 5.  
 		- Set the same folder path as set to Primary SQL Server in Step 5.
-8. Move group back to Primary server
+8. Move group back to Primary server.
 
 ### SSRS Setup
 #### On Primary server
-9. Start SQL Server service and Reporting Services service
-10. Start Reporting Service Configuration Manager and connect to the SQL Server instance  
+9. Start SQL Server service and Reporting Services service.
+10. Start Reporting Service Configuration Manager and connect to the SQL Server instance.  
 	- Service Account:  
-		Apply the default settings  
+		Apply the default settings.  
 	- Web Service URL:  
-		Apply the default settings  
+		Apply the default settings.  
 	- Database:  
-		Select "Create a new report server database"  
-		Select local server as a Database Server  
+		Select "Create a new report server database".  
+		Select local server as a Database Server.  
 		Set Report Server Database Name.
 	- Web Portal URL:  
-		Apply the default settings
+		Apply the default settings.
 	- Encryption Key:  
-		Backup key file and store it under \<folder path which is on sd resource Data Partition\>
-11. Comfirm that you can connect to Report Server from a client  
+		Backup key file and store it under \<folder path which is created under sd resource Switching Partition\>.
+11. Comfirm that you can connect to Report Server from a client.  
 	```bat
 	http://\<fip\>/Reports  
 	http://\<fip\>/ReportServer
 	```
-12. Stop SQL Server service and Reporting Services service
-13. Move group to Secondary server  
+12. Stop SQL Server service and Reporting Services service.
+13. Move group to Secondary server.
 
 #### On Secondary server
-14. Start SQL Server service and Reporting Services service  
+14. Start SQL Server service and Reporting Services service.
 15. Copy Reporting Service parameter in config file from Primary Server to Secondary server.  
 	- Config file path:  
 		\<SQL Server installation path\>\MSRS13.MSSQLSERVER\Reporting Services\ReportServer
@@ -115,30 +115,30 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		rsreportserver.config  
 	- Target parameter:  
 		Installation ID
-16. Start Reporting Service Configuration Manager and connect to the SQL Server instance  
+16. Start Reporting Service Configuration Manager and connect to the SQL Server instance.  
 	- Service Account:  
-		Apply the default settings  
+		Apply the default settings.  
 	- Web Service URL:  
-		Apply the default settings
+		Apply the default settings.
 	- Database:  
-		Select "Choose an existing report server database"  
-		Select local server as a Database Server  
-		Select Report Server Database which was created in step 3.i.b.  
+		- Select "Choose an existing report server database".  
+		- Select local server as a Database Server.  
+		- Select Report Server Database which was created in step 3.i.b.  
 	- Web Portal URL:  
-		Apply the default settings
+		Apply the default settings.
 	- Encryption Key:  
 		Restore backup key file which was created in step 3.i.b.
-17. Comfirm that you can connect to Report Server from a client  
+17. Comfirm that you can connect to Report Server from a client.  
 	```bat
 	http://\<fip\>/Reports  
 	http://\<fip\>/ReportServer
 	```
-18. Stop SQL Server service and Reporting Services service  
-19. Move group back to Primary server  
+18. Stop SQL Server service and Reporting Services service.  
+19. Move group back to Primary server.  
 
 ### MSSQL cluster setup
 #### On Primary server
-20. Add resources to group  
+20. Add resources to group.  
 	- service_sql  
 		Target service:  SQL Server  
 		Start/Stop:  synchronous
