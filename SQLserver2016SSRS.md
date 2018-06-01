@@ -63,9 +63,9 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Set "Manual" for service startup tyeps which will be clustered.  
 		(e.g. SQL Server Database Engine and SQL Server Agent)
 	- Database Engine Configuration:  
-		Add accounts which will be used from both Primary and Secondary server  
-		(e.g. domain user for Windows authentication or sa account for SQL authentication)  
-		Set \<folder path which is on sd resource Data Partition\> for Data Root Directory
+		- Add an account which will be used from both Primary and Secondary server  
+			(e.g. domain user for Windows authentication or sa account for SQL authentication)  
+		- Set [folder path which is created under sd resource Switching Partition] for Data Root Directory
 6. Move group to Secondary server
 
 #### On Secondary server
@@ -78,9 +78,8 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Set Manual startup for services which will be clustered.  
 		(e.g. SQL Server Database Engine and SQL Server Agent)
 	- Database Engine Configuration:  
-		Add accounts which will be used from both Primary and Secondary server  
-		(e.g. domain user for Windows authentication or sa account for SQL authentication)  
-		Set [folder path which is on sd resource Data Partition] for Data Root Directory
+		- Add the same account as added to Primary SQL Server in Step 5.  
+		- Set the same folder path as set to Primary SQL Server in Step 5.
 8. Move group back to Primary server
 
 ### SSRS Setup
