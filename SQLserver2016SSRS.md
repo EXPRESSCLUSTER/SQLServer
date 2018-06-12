@@ -79,13 +79,25 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		(e.g. SQL Server Database Engine and SQL Server Agent)
 	- Database Engine Configuration:  
 		- Add the same account as added to Primary SQL Server in Step 5.  
-		- Set the same folder path as set to Primary SQL Server in Step 5.
-8. Move group back to Primary server.
+		- Set \<Temporary folder\> for Data Root Directory.
+8. Change SQL Server Startup Parameters
+	1. Start SQL Server Configuration Manager
+	1. Right click "SQLServer ()", select "Properties" and go to "Startup Parameters" tab.
+	1. Change Startup Parameters to the same as Primary Server setting  
+		*Before*  
+		-d<Temporary folder>\MSSQL12.MSSQLSERVER\MSSQL\DATA\master.mdf  
+		-e<Temporary folder>\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG  
+		-l<Temporary folder>\MSSQL12.MSSQLSERVER\MSSQL\DATA\mastlog.ldf  
+		*After*  
+		-d<Folder path which is on sd resource Data Partition>\MSSQL12.MSSQLSERVER\MSSQL\DATA\master.mdf  
+		-e<Folder path which is on sd resource Data Partition>\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG  
+		-l<Folder path which is on sd resource Data Partition>\MSSQL12.MSSQLSERVER\MSSQL\DATA\mastlog.ldf  
+9. Move group back to Primary server.
 
 ### SSRS Setup
 #### On Primary server
-9. Start SQL Server service and Reporting Services service.
-10. Start Reporting Service Configuration Manager and connect to the SQL Server instance.  
+10. Start SQL Server service and Reporting Services service.
+11. Start Reporting Service Configuration Manager and connect to the SQL Server instance.  
 	- Service Account:  
 		Apply the default settings.  
 	- Web Service URL:  
@@ -98,24 +110,24 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Apply the default settings.
 	- Encryption Key:  
 		Backup key file and store it under \<folder path which is created under sd resource Switching Partition\>.
-11. Comfirm that you can connect to Report Server from a client.  
+12. Comfirm that you can connect to Report Server from a client.  
 	```bat
 	http://\<fip\>/Reports  
 	http://\<fip\>/ReportServer
 	```
-12. Stop SQL Server service and Reporting Services service.
-13. Move group to Secondary server.
+13. Stop SQL Server service and Reporting Services service.
+14. Move group to Secondary server.
 
 #### On Secondary server
-14. Start SQL Server service and Reporting Services service.
-15. Copy Reporting Service parameter in config file from Primary Server to Secondary server.  
+15. Start SQL Server service and Reporting Services service.
+16. Copy Reporting Service parameter in config file from Primary Server to Secondary server.  
 	- Config file path:  
 		\<SQL Server installation path\>\MSRS13.MSSQLSERVER\Reporting Services\ReportServer
 	- Config file name:  
 		rsreportserver.config  
 	- Target parameter:  
 		Installation ID
-16. Start Reporting Service Configuration Manager and connect to the SQL Server instance.  
+17. Start Reporting Service Configuration Manager and connect to the SQL Server instance.  
 	- Service Account:  
 		Apply the default settings.  
 	- Web Service URL:  
@@ -128,17 +140,17 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Apply the default settings.
 	- Encryption Key:  
 		Restore backup key file which was created in step 3.i.b.
-17. Comfirm that you can connect to Report Server from a client.  
+18. Comfirm that you can connect to Report Server from a client.  
 	```bat
 	http://\<fip\>/Reports  
 	http://\<fip\>/ReportServer
 	```
-18. Stop SQL Server service and Reporting Services service.  
-19. Move group back to Primary server.  
+19. Stop SQL Server service and Reporting Services service.  
+20. Move group back to Primary server.  
 
 ### MSSQL cluster setup
 #### On Primary server
-20. Add resources to group.  
+21. Add resources to group.  
 	- service_sql  
 		Target service:  SQL Server  
 		Start/Stop:  synchronous
@@ -152,14 +164,14 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		start.bat:  Refer [Appendix Sample script](https://github.com/EXPRESSCLUSTER/SQLServer/blob/master/SQLserver2016SSRS.md#sample-scripts).  
 		stop.bat:  No need to set.
 		Start/Stop:  synchronous
-21. Change resource dependency as the below:  
+22. Change resource dependency as the below:  
 	- 0  fip  
 		1  sd  
 		2  service_sql  
 		3  service_agent  
 		4  service_report  
 		5  script
-22. Apply the configuration and confirm cluster behaviour.
+23. Apply the configuration and confirm cluster behaviour.
 
 ## Appendix
 ### Sample scripts
