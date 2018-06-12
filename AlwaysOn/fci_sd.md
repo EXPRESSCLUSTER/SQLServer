@@ -10,7 +10,7 @@
 
 		- mssql-server-14.0.3006.16-3.x86_64
 		- mssql-tools-14.0.6.0-1.x86_64
-		- EXPRESSCLUSTER X 3.3.5-1
+		- EXPRESSCLUSTER X 4.0.0-1
 		- CentOS 7.4 (kernel-3.10.0-693.el7.x86_64)
 
 	2. License Requirements
@@ -18,8 +18,8 @@
 		| Products	| Qty	|
 		| ----		| ----	|
 		| SQL Server 2017 on Linux		| 2 |
-		| EXPRESSCLSTER X 3.3			| 2 |
-		| EXPRESSCLSTER X Database Agent 3.3	| 2 |
+		| EXPRESSCLSTER X 4.0			| 2 |
+		| EXPRESSCLSTER X Database Agent 4.0	| 2 |
 
 	3. Server Requirements
 
@@ -219,7 +219,7 @@
 		5. In the next window, the server on which the cluster creation has started is already added. Click Add to add another server to this cluster.
 		6. Provide the hostname or the IP address of the second server and click OK.
 		7. Now both servers will appear on the list. Click Next.
-		8. EXPRESSCLUSTER X 3.3 automatically detects the IP addresses of the servers, which can be seen on this screen. Select the network to be used for the Heartbeat path as type Kernel Mode. If Mirroring is also occurring through the same network cards, then specify the Mirror connect settings in the respective network fields. Click the dropdown button on the "Mirror Disk Connect" and select the connect number (e.g.: mdc1). Click Next.
+		8. EXPRESSCLUSTER X automatically detects the IP addresses of the servers, which can be seen on this screen. Select the network to be used for the Heartbeat path as type Kernel Mode. If Mirroring is also occurring through the same network cards, then specify the Mirror connect settings in the respective network fields. Click the dropdown button on the "Mirror Disk Connect" and select the connect number (e.g.: mdc1). Click Next.
 		9. For this guide, the NP resolutions resources are not configured. Click Next.
 
 	4. Create a failover group
