@@ -1,7 +1,6 @@
 # AG cluster Quick Start Guide
 ## About This Guide
-This guide provides how to integrate MSSQL Server for Linux Availability Group (AG) with EXPRESSCLUSTER X and create AG cluster.
-
+This guide provides how to integrate SQL Server 2017 on Linux Availability Group (AG) with EXPRESSCLUSTER X and create AG cluster.  
 The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup skills.
 
 ## System Overiew
@@ -9,7 +8,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 - 3 servers are required for AG cluster.
 - 1 Ping NP target is required for AG cluster.
 - All the servers and Ping NP target are required to be communicatable with each other with IP address.
-- MSSQL Server for Linux and EXPRESSCLUSTER X are required to be installed on all servers.
+- SQL Server 2017 on Linux and EXPRESSCLUSTER X are required to be installed on all servers.
 
 ### System Environment
 - Server spec  
@@ -19,7 +18,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 	- OS: Cent 7.4 (3.10.0-693.21.1.el7.x86_64)
 	```
 - Software versions  
-	- MS SQL Server 2017 on Linux
+	- SQL Server 2017 on Linux
 	- EXPRESSCLUSTER X 3.3.5-1
 	```
 
@@ -63,7 +62,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 	If mssql-server service on Standby server is stopped by other than EXPRESSCLUSTER operations, it is detected as an error but no action will occur.
 
 ## System Setup
-### Download and install MSSQL Server
+### Download and install SQL Server
 #### On all servers
 1. Download repository for SQL Server.  
 	```bat
@@ -77,7 +76,7 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 	```bat
 	# /opt/mssql/bin/mssql-conf setup
 	```
-4. Confirm tha SQL Server is running.  
+4. Confirm the SQL Server is running.  
 	```bat
 	# systemctl status mssql-server
 	```
