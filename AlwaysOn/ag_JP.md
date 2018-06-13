@@ -1,66 +1,61 @@
 # 可用性グループクラスタ　構築ガイド
-## 概要
+## はじめに
 本ガイドでは、CLUSTERPRO X による SQL Server 2017 on Linux 可用性グループクラスタを構築する手順を記載します。  
 CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterpro/clpx/index.html)を参照ください。  
 SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合わせください。  
 
-## System Overiew
-### System Requirement
-- 3 servers are required for AG cluster.
-- 1 Ping NP target is required for AG cluster.
-- All the servers and Ping NP target are required to be communicatable with each other with IP address.
-- MSSQL Server for Linux and EXPRESSCLUSTER X are required to be installed on all servers.
-
-### System Environment
-- Server spec  
-	- Mem: 4GB
-	- CPU Core: 2 for 1 Socket
-	- Disk: 20GB
-	- OS: Cent 7.4 (3.10.0-693.21.1.el7.x86_64)
-	```
-- Software versions  
-	- MS SQL Server 2017 on Linux
+## 構成
+### システム構成
+- ハードウェア
+	- サーバ: 3台（仮想/物理）
+		- メモリ: 4GB
+		- CPU: 2コア/1ソケット
+		- ディスク: 20GB
+		- OS: Cent 7.4 (3.10.0-693.21.1.el7.x86_64)
+	- PingNP ターゲットノード: 1台
+- ソフトウェア
+	- SQL Server 2017 on Linux
 	- EXPRESSCLUSTER X 3.3.5-1
-	```
 
-## Cluster Overview
-### Cluster Configuration
-- Cluster Properties
-	- NP Resolution:
+### クラスタ構成
+- クラスタのプロパティ
+	- NP解決:
 		- Ping NP:  
-			Used to avoid NP.
-- Failover Group
-	- Resurces
+			ネットワークパーティション回避のために追加する。
+- フェイルオーバグループ
+	- リソース
 		- fip:  
-			Used to connect AG database from Client.
+			クライアントからプライマリ可用性レプリカ（プライマリレプリカ）への接続に使用する。
 		- exec:  
-			Used to manage AG.
-	- Monitor Resources
+			プライマリレプリカとセカンダリ可用性レプリカ（セカンダリレプリカ）の管理に使用する。
+	- 監視リソース
 		- genw-ActiveNode:  
-			Used to monitor Active Server AG role.
+			フェイルオーバグループが起動しているサーバ（アクティブサーバ）の可用性レプリカの役割を監視する。
 		- genw-SatndbyNode:  
-			Used to monitor Standby Server AG role.
+			フェイルオーバグループが起動していないサーバ（スタンバイサーバ）の可用性レプリカの役割を監視する。
 		- psw:  
-			Used to moitor SQL Server service status.
+			全サーバの SQL Server サービスを監視する。
 
-### Assumptions
-- For an access from client to PRIMARY replica, fip is used.
-- AG replica on all servers should be operated by EXPRESSCLUSTER.
+### システム要件
+- 全てのサーバと PingNP ターゲットは、お互いに IP アドレスで通信可能である。
+- SQL Server on Linux と EXPRESSCLUSTER X は全てのサーバにインストールされる。
+- クライアントからプライマリレプリカへの接続には、必ず fip を使用し、サーバの実 IP アドレスは使用しない。
+- 可用性レプリカの操作は、必ず CLUSTERPRO X から行う。
 
-### Behavior
-- When failover group is activated on a server, AG role of the server replica becomes PRIMARY.  
-- When failover group is de-activated on a server, AG role of the server replica becomes SECONDARY.  
-- When failover group is failed over, AG role of the source server replica becomes SECONDARY and role of the target server replica becomes PRIMARY.  
+### 動作
+- アクティブサーバでは、可用性レプリカの役割がプライマリになる。  
+- スタンバイサーバでは、可用性レプリカの役割がセカンダリになる。  
+- フェイルオーバグループがフェイルオーバすると、フェイルオーバ元サーバの可用性レプリカの役割はプライマリからセカンダリに変わり、フェイルオーバ先サーバの可用性レプリカの役割はセカンダリからプライマリに変わる。  
 
-### Monitoring
-- Active node role monitoring:  
-	If replica role on Active server is demoted from PRIMARY to SECONDARY by other than EXPRESSCLUSTER operations, it is detected as an error and failover will occur.
-- Standby node monitorng:  
-	If replica role on Standby server role is promoted from SECONDARY to PRIMARY by other than EXPRESSCLUSTER operations, it is detected as an error and EXPRESSCLUSTER will demote it to SECONDARY.
-- Active node service monitoring:  
-	If mssql-server service on Active server is stopped by other than EXPRESSCLUSTER operations, it is detected as an error and failover will occur.
-- Standby node service monitoring:  
-	If mssql-server service on Standby server is stopped by other than EXPRESSCLUSTER operations, it is detected as an error but no action will occur.
+### 監視
+- アクティブサーバ可用性レプリカの役割監視:  
+	アクティブサーバの可用性レプリカの役割が、CLUSTERPRO X からの操作以外でセカンダリに変わった場合、エラーとして検知され、フェイルオーバが実行される。  
+- スタンバイサーバ可用性レプリカの役割監視:  
+	スタンバイサーバの可用性レプリカの役割が、CLUSTERPRO X からの操作以外でプライマリに変わった場合、エラーとして検知され、セカンダリに役割変更される。  
+- アクティブサーバのサービス監視:  
+	アクティブサーバの SQL Server サービス（mssql-server）が停止した場合、エラーとして検知され、フェイルオーバが実行される。  
+- スタンバイサーバのサービス監視:  
+	スタンバイサーバの SQL Server サービス（mssql-server）が停止した場合、エラーとして検知される。  
 
 ## 構築
 ### SQL Server のダウンロードとインストール
