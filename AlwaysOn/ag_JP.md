@@ -2,7 +2,6 @@
 ## はじめに
 本ガイドでは、CLUSTERPRO X による SQL Server 2017 on Linux 可用性グループクラスタを構築する手順を記載します。  
 CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterpro/clpx/index.html)を参照ください。  
-SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合わせください。  
 
 ## 構成
 ### システム構成
@@ -15,7 +14,7 @@ SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合
 	- PingNP ターゲットノード: 1台
 - ソフトウェア
 	- SQL Server 2017 on Linux
-	- EXPRESSCLUSTER X 3.3.5-1
+	- EXPRESSCLUSTER X 3.3.5-1/4.0.0-1
 
 ### クラスタ構成
 - クラスタのプロパティ
@@ -256,10 +255,10 @@ https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-availability-group-c
   クラスタの構成については[クラスタ設定](https://github.com/EXPRESSCLUSTER/SQLServer/blob/master/AlwaysOn/ag_JP.md#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E8%A8%AD%E5%AE%9A)を参照する。  
 5. フェイルオーバグループを PRIMARY サーバで起動する。  
 
-参考:  
-https://www.nec.com/en/global/prod/expresscluster/en/support/manuals.html
-- EXPRESSCLUSTER X 3.3 for Linux Installation and Configuration Guide
-- EXPRESSCLUSTER X 3.3 for Linux Reference Guide
+参考：  
+https://jpn.nec.com/clusterpro/clpx/manual_x40.html#anc-lin  
+Linux インストール&設定ガイド  
+Linux リファレンスガイド
 
 ## クラスタ設定
 - クラスタのプロパティ
