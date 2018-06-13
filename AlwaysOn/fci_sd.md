@@ -10,7 +10,9 @@
 
 		- mssql-server-14.0.3006.16-3.x86_64
 		- mssql-tools-14.0.6.0-1.x86_64
-		- EXPRESSCLUSTER X 4.0.0-1
+		- EXPRESSCLUSTER X 
+		  - 4.0.0-1
+		  - 3.3.5-1
 		- CentOS 7.4 (kernel-3.10.0-693.el7.x86_64)
 
 	2. License Requirements
