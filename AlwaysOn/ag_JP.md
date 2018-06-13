@@ -1,4 +1,4 @@
-# 可用性グループクラスタ　構築ガイド
+# 可用性グループクラスタ　クイック構築ガイド
 ## はじめに
 本ガイドでは、CLUSTERPRO X による SQL Server 2017 on Linux 可用性グループクラスタを構築する手順を記載します。  
 CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterpro/clpx/index.html)を参照ください。  
