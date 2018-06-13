@@ -1,8 +1,8 @@
 # 可用性グループクラスタ　構築ガイド
 ## 概要
-本ガイドでは、CLUSTERPRO X による SQL Server 2017 on Linux 可用性グループクラスタを構築する手順を記載します。
-CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterpro/clpx/index.html)を参照ください。
-SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合わせください。
+本ガイドでは、CLUSTERPRO X による SQL Server 2017 on Linux 可用性グループクラスタを構築する手順を記載します。  
+CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterpro/clpx/index.html)を参照ください。  
+SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合わせください。  
 
 ## System Overiew
 ### System Requirement
@@ -90,7 +90,7 @@ SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合
 	```bat
 	# curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/7/prod.repo
 	```
-7. もし古いバージョンのものがインストールされている場合は、アンインストールしてから最新版をインストールする。  
+7. もし古いバージョンのものがインストールされている場合は、アンインストール1してから最新版をインストールする。  
 	```bat
 	# yum remove unixODBC-utf16 unixODBC-utf16-devel
 	# yum install -y mssql-tools unixODBC-devel
@@ -106,8 +106,8 @@ SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合
 	# sqlcmd -S localhost -U SA -P '<YourPassword>'
 	```
 
-参考：
-[https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-red-hat]
+参考：  
+https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-red-hat
 
 ### 可用性グループの構築
 #### 全サーバで行う
@@ -239,14 +239,14 @@ SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合
 	> go
 	> exit
 	```
-参考:
-[https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-availability-group-configure-ha]
+参考:  
+https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-availability-group-configure-ha
 
 ### CLUSTERPRO のインストールと構築
 #### 全サーバで行う
 1. CLUSTERPRO をインストールし、ライセンスを登録する。  
 2. sqlcommand スクリプトを作成し、保存する。  
-	例） "/opt/nec/clusterpro/scripts/failover/sqlcommand/" フォルダを作成し、以下のスクリプトを保存する。 
+	例） "/opt/nec/clusterpro/scripts/failover/sqlcommand/" フォルダを作成し、以下のスクリプトを保存する。
   	- [agFailover.sql](https://github.com/Igaigasuru/EXPRESSCLUSTER/blob/master/scripts/AG%20cluster/agFailover.sql)  
 	- [is_failover_ready.sql](https://github.com/Igaigasuru/EXPRESSCLUSTER/blob/master/scripts/AG%20cluster/is_failover_ready.sql)  
 	- [role.sql](https://github.com/Igaigasuru/EXPRESSCLUSTER/blob/master/scripts/AG%20cluster/role.sql)  
@@ -258,11 +258,11 @@ SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合
 
 #### 1号機でのみ行う
 4. WebManager を起動し、クラスタを構築して適用する。  
-  クラスタの構成については[クラスタ設定](https://github.com/Igaigasuru/EXPRESSCLUSTER/blob/master/AG%20cluster%20Quick%20Start%20Guide.md#cluster-settings)を参照する。  
+  クラスタの構成については[クラスタ設定](https://github.com/EXPRESSCLUSTER/SQLServer/blob/master/AlwaysOn/ag_JP.md#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E8%A8%AD%E5%AE%9A)を参照する。  
 5. フェイルオーバグループを PRIMARY サーバで起動する。  
 
-参考:
-[https://www.nec.com/en/global/prod/expresscluster/en/support/manuals.html]
+参考:  
+https://www.nec.com/en/global/prod/expresscluster/en/support/manuals.html
 - EXPRESSCLUSTER X 3.3 for Linux Installation and Configuration Guide
 - EXPRESSCLUSTER X 3.3 for Linux Reference Guide
 
@@ -301,13 +301,15 @@ SQL Server 2017 on Linux の詳細については、Microsoft 社へお問い合
 		- psw:
 			- 監視タイミング: 常時
 			- 監視を行うサーバを選択する: 全てのサーバ
-			- プロセス名(*): /opt/mssql/bin/sqlservr  
-        * ps コマンドで事前にプロセス名を確認してください。
-          # ps -eaf
+			- プロセス名(※): /opt/mssql/bin/sqlservr  
+				※ps コマンドで事前にプロセス名を確認してください。  
+					```bat
+					# ps -eaf
+					```
 			- 回復動作: 回復対象に対してフェイルオーバ実行
 			- 回復対象: フェイルオーバグループ
 
 
-参考:
-[https://docs.microsoft.com/en-us/sql/database-engine/availability-groups/windows/monitor-availability-groups-transact-sql#AvGroups]
-[https://docs.microsoft.com/en-us/sql/t-sql/statements/alter-availability-group-transact-sql?view=sql-server-2017]
+参考:  
+https://docs.microsoft.com/en-us/sql/database-engine/availability-groups/windows/monitor-availability-groups-transact-sql#AvGroups  
+https://docs.microsoft.com/en-us/sql/t-sql/statements/alter-availability-group-transact-sql?view=sql-server-2017  
