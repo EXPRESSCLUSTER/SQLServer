@@ -84,7 +84,7 @@ CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterp
 	```bat
 	# curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/7/prod.repo
 	```
-7. もし古いバージョンのものがインストールされている場合は、アンインストール1してから最新版をインストールする。  
+7. もし古いバージョンのものがインストールされている場合は、アンインストールしてから最新版をインストールする。  
 	```bat
 	# yum remove unixODBC-utf16 unixODBC-utf16-devel
 	# yum install -y mssql-tools unixODBC-devel
