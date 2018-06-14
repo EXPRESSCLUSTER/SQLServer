@@ -85,13 +85,13 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 	1. Right click "SQLServer ()", select "Properties" and go to "Startup Parameters" tab.
 	1. Change Startup Parameters to the same as Primary Server setting  
 		*Before*  
-		-d<Temporary folder>\MSSQL12.MSSQLSERVER\MSSQL\DATA\master.mdf  
-		-e<Temporary folder>\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG  
-		-l<Temporary folder>\MSSQL12.MSSQLSERVER\MSSQL\DATA\mastlog.ldf  
+		-d\<Temporary folder\>\MSSQL12.MSSQLSERVER\MSSQL\DATA\master.mdf  
+		-e\<Temporary folder\>\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG  
+		-l\<Temporary folder\>\MSSQL12.MSSQLSERVER\MSSQL\DATA\mastlog.ldf  
 		*After*  
-		-d<Folder path which is on sd resource Data Partition>\MSSQL12.MSSQLSERVER\MSSQL\DATA\master.mdf  
-		-e<Folder path which is on sd resource Data Partition>\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG  
-		-l<Folder path which is on sd resource Data Partition>\MSSQL12.MSSQLSERVER\MSSQL\DATA\mastlog.ldf  
+		-d\<Folder path which is on sd resource Data Partition\>\MSSQL12.MSSQLSERVER\MSSQL\DATA\master.mdf  
+		-e\<Folder path which is on sd resource Data Partition\>\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG  
+		-l\<Folder path which is on sd resource Data Partition\>\MSSQL12.MSSQLSERVER\MSSQL\DATA\mastlog.ldf  
 9. Move group back to Primary server.
 
 ### SSRS Setup
