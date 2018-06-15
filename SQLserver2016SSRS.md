@@ -112,8 +112,8 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Backup key file and store it under \<folder path which is created under sd resource Switching Partition\>.
 12. Comfirm that you can connect to Report Server from a client.  
 	```bat
-	http://\<fip\>/Reports  
-	http://\<fip\>/ReportServer
+	http://<fip>/Reports  
+	http://<fip>/ReportServer
 	```
 13. Stop SQL Server service and Reporting Services service.
 14. Move group to Secondary server.
