@@ -8,11 +8,15 @@
 
 	1. Versions used on verification
 
-		- mssql-server-14.0.3006.16-3.x86_64
-		- mssql-tools-14.0.6.0-1.x86_64
-		- EXPRESSCLUSTER X 
-		  - 4.0.0-1
-		  - 3.3.5-1
+		- SQL Server 2017 on Linux
+		  - mssql-server-14.0.3026.27-2.x86_64
+		  - mssql-server-14.0.3006.16-3.x86_64
+		- SQL Server 2017 command-line tools
+		  - mssql-tools-17.1.0.1-1.x86_64
+		  - mssql-tools-14.0.6.0-1.x86_64
+		- EXPRESSCLUSTER X
+		  - expresscls-4.0.0-1.x86_64
+		  - expresscls-3.3.5-1.x86_64
 		- CentOS 7.4 (kernel-3.10.0-693.el7.x86_64)
 
 	2. License Requirements
@@ -20,8 +24,8 @@
 		| Products	| Qty	|
 		| ----		| ----	|
 		| SQL Server 2017 on Linux		| 2 |
-		| EXPRESSCLSTER X 4.0			| 2 |
-		| EXPRESSCLSTER X Database Agent 4.0	| 2 |
+		| EXPRESSCLUSTER X 4.0 			| 2 |
+		| EXPRESSCLUSTER X Database Agent 4.0	| 2 |
 
 	3. Server Requirements
 
@@ -101,9 +105,9 @@
 	2. Setup the Standby Server (Machine 2)
 		- Perform above steps in *Chapter 3* on the Standby Server.
 
-4. MSSQL Server Installation
+4. SQL Server Installation
 
-	Installing MSSQL on Primary Server and Secondary Server
+	Installing SQL Server on Primary Server and Secondary Server
 
 	1. Install and configure SQL Server 2017 as per requirement of the client/customer.
 
@@ -128,7 +132,7 @@
 				sudo firewall-cmd --zone=public --add-port=1433/tcp -permanent
 				sudo firewall-cmd -reload
 
-	2. MSSQL server command line tools installation
+	2. SQL Server command-line tools installation
 
 		1. Run Command
 
@@ -152,7 +156,7 @@
 
 				sudo ln -s /opt/mssql-tools/bin/* /usr/local/bin/
 
-5. ECX Installation
+5. EXPRESSCLUSTER X Installation
 
 	1. Install EXPRESSCLUSTER on the Primary & Standby Server (Machine 1&2)
 
@@ -261,11 +265,11 @@
 		3. Restart Cluster Manager and start the cluster. Click on the Service menu and then click on Start Cluster.
 		4. In the Cluster Manager window, all icons in the tree view should now be green
 
-
+<!--
 [Figure 1](fig1.jpg) Live cluster
+-->
 
-
-8. MSSQL Cluster Setup
+8. SQL Server Cluster Setup
 
 	1. Change the group and user permissions of the disk resource mount point
 
