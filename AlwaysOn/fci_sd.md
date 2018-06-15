@@ -121,7 +121,7 @@
 
 		3. Set up password and Version
 
-				sudo /opt/mssql/bin/mssql-conf
+				sudo /opt/mssql/bin/mssql-conf setup
 
 		4. To check mssql status
 
@@ -310,7 +310,7 @@
 
 	4. Cluster Configuration Setup
 
-		Adding a Service resource
+		Adding a exec resource
 
 		1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
 		2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
@@ -328,7 +328,7 @@
 
 				#/bin/bash
 				sudo systemctl stop mssql-server
-
+<!--
 		Adding a Service resource
 
 		1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
@@ -350,7 +350,7 @@
 				iscsiadm --mode node --targetname iqn.2003-01.org.linux-iscsi.target.x8664:sn.6dee7f95da33 --portal 10.0.7.118 --logout
 
 		`10.0.7.118` is IP address of iSCSI target server in the above scripts.
-
+-->
 9. Final Deployment in a LAN Environment
 
 	This chapter describes the steps to verify a LAN infrastructure and to deploy the cluster configuration on the Primary and the Secondary servers
