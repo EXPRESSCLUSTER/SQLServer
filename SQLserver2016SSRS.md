@@ -142,8 +142,8 @@ The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup
 		Restore backup key file which was created in step 3.i.b.
 18. Comfirm that you can connect to Report Server from a client.  
 	```bat
-	http://\<fip\>/Reports  
-	http://\<fip\>/ReportServer
+	http://<fip>/Reports  
+	http://<fip>/ReportServer
 	```
 19. Stop SQL Server service and Reporting Services service.  
 20. Move group back to Primary server.  
