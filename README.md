@@ -7,7 +7,7 @@ Create SQL Server cluster with Availability Group (AG) or Failover Cluster Insta
 ## SQL Server 2017
 
 ## SQL Server 2016
-### SSRS Cluster
+### SQL Server Reporting Service Cluster
 Create SQL Server Reporting Service 2016 cluster. For more detail, please check [SQLServer2016SSRS](https://github.com/EXPRESSCLUSTER/SQLServer/blob/master/SQLserver2016SSRS.md).
 
 ## SQL Server 2014
