@@ -107,7 +107,7 @@ https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-red-hat
 #### 全サーバで行う
 1. 全サーバの名前解決ができるよう、"/etc/hostname" を編集する。  
 	```bat
-	# sudo vi /etc/hstname
+	# sudo vi /etc/hostname
 	```
 2. 可用性グループ機能を有効化し、mssql-server サービスを再起動する。  
 	```bat
