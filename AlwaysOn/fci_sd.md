@@ -100,7 +100,9 @@ If necessary, install required hardware components and a supported OS as specifi
 Installing SQL Server on Primary Server and Secondary Server
 1. Install and configure SQL Server 2017 as per requirement of the client/customer.
    1. Download the Microsoft SQL Server repository configuration file.
-      https://packages.microsoft.com/config/rhel/7/mssql-server-2017.repo
+      ```sh
+      sudo curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/7/prod.repo
+      ```
    1. Install MSSQL Server , Run the command
       ```sh
       sudo yum install -y mssql-server
@@ -234,72 +236,122 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
 [Figure 1](fig1.jpg) Live cluster
 -->
 
-## SQL Server Cluster Setup
-1. Change the group and user permissions of the disk resource mount point
-   1. Change the owner and group of the mount point for the disk resource.
+## Change the SQL Server Parameters
+1. Start the failover group on the primary server.
+1. Stop SQL Server on the primary server.
+   ```sh
+   sudo systemctl stop mssql-server
+   ```
+1. Change the owner and group of the mount point for the disk resource.
    ```sh
    sudo chown mssql:mssql /mssql/data/
    ```
-   /mssql/data is mount point of the shared storage.
-   1. Use mssql-conf to change the default data directory with the set command
+1. Change the following parameters with mssql-conf command.
    ```sh
    sudo /opt/mssql/bin/mssql-conf set filelocation.defaultdatadir /mssql/data
-   ```
-   1. Restart the SQL Server service
-   ```sh
-   sudo systemctl restart mssql-server
-   ```
-   To configure MSSQL Database server cluster we will configure its service with EXPRESSCLUSTER. Change the default path of the database to a path on the data partition.
-1. Change the default master database file directory location
-   ```sh
    sudo /opt/mssql/bin/mssql-conf set filelocation.masterdatafile /mssql/data/master.mdf
    sudo /opt/mssql/bin/mssql-conf set filelocation.masterlogfile /mssql/data/mastlog.ldf
    ```
 1. Move the master.mdf and master.ldf
-   1. Stop the MSSQL Server Service
-      ```sh
-      sudo systemctl stop mssql-server
-      sudo mv /var/opt/mssql/data/master.mdf /mssql/data/master.mdf
-      sudo mv /var/opt/mssql/data/mastlog.ldf /mssql/data/mastlog.ldf
-      ```
-<!--      
-   1. Start the MSSQL Service
-      ```sh
-      sudo systemctl start mssql-server
-      ```
--->
-   1. Add an exec resource
-      1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
-      2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
-      3. On next window, make sure "Follow the default dependency" check box is checked and click NEXT.
-      4. On next window "Recovery Operation at Deactivation Failure Detection", make the final action as "No Operation (deactivate next resource)" and click NEXT.
-      5. In the next window edit the start.sh file and replace the source with source code shown below.
-      6. In the same window select the stop.sh file and edit the stop.sh file and replace the source with scripts shown as below and click FINISH.
-         - Start Script
-           ```sh
-           #/bin/bash
-           sudo systemctl start mssql-server
-           ```
-         - Stop Script
-           ```sh
-           #/bin/bash
-           sudo systemctl stop mssql-server
-           ```
-   1. Add a SQL Server monitor resource
-      1. On Cluster Builder (Config Mode), in the tree view, right-click Monitors and then click Add Monitor Resource.
-      1. In the "Monitor Resource Definition" window, click **"Get License Info"**, for Type, select **"SQL Server monitor"** from the pull-down box. For Name, use the default (sqlserverw). Click Next.
-      1. On next window, click "Browse", select **"exec" resource** and click "OK". Click "Next".
-      1. Set the following parameters and click "Next".
-         - Monitor Level: Level 2 (monitoring by update/select)
-         - Database Name: testdb
-         - Server Name: localhost
-         - User Name: SA
-         - Password: Your Password
-         - Monitor Table Name: sqlwatch
-         - ODBC Driver Name: ODBC Driver 17 for SQL Server 
-      1. Click "Browse", select failover group and click "OK".
-      1. Click "Finish".
-   1. Upload the cluster configuration.
+   ```sh
+   sudo mv /var/opt/mssql/data/master.mdf /mssql/data/master.mdf
+   sudo mv /var/opt/mssql/data/mastlog.ldf /mssql/data/mastlog.ldf
+   ```
+1. Start SQL Server.
+   ```sh
+   sudo systemctl start mssql-server
+   ```
+1. Confirm connectivity from the client from the server.
+   ```sh
+   sqlcmd -S localhost -U sa -P '<password>'
+   1>
+   ```
+1. Create a database for SQL Server monitor.
+   ```sh
+   1> create database testdb
+   2> go
+   1> select name from sys.databases
+   2> go
+   name
+   ------------
+   master
+   tempdb
+   model
+   msdb
+   testdb
+   ```
+1. Stop SQL Server.
+   ```sh
+   sudo systemctl stop mssql-server
+   ```
+1. Move the failover group from the primary server to the standby server.
+1. Stop SQL Server on the standby server.
+1. Change the SQL Server parameters.
+Change the following parameters with mssql-conf command.
+   ```sh
+   sudo /opt/mssql/bin/mssql-conf set filelocation.defaultdatadir /mssql/data
+   sudo /opt/mssql/bin/mssql-conf set filelocation.masterdatafile /mssql/data/master.mdf
+   sudo /opt/mssql/bin/mssql-conf set filelocation.masterlogfile /mssql/data/mastlog.ldf
+   ```
+1. Start SQL Server on the standby server.
+   ```sh
+   sudo systemctl start mssql-server
+   ```
+1. Confirm connectivity from the client from the server.
+   ```sh
+   sqlcmd -S localhost -U sa -P '<password>'
+   1>
+   ```
+1. Check if the database for SQL Server monitor is available.
+   ```sh
+   1> select name from sys.databases
+   2> go
+   name
+   ------------
+   master
+   tempdb
+   model
+   msdb
+   testdb
+   ```
+1. Stop SQL Server.
+   ```sh
+   sudo systemctl stop mssql-server
+   ```
+1. Stop the failover group.
+## SQL Server Cluster Setup
+1. Add an exec resource
+   1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
+   2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
+   3. On next window, make sure "Follow the default dependency" check box is checked and click NEXT.
+   4. On next window "Recovery Operation at Deactivation Failure Detection", make the final action as "No Operation (deactivate next resource)" and click NEXT.
+   5. In the next window edit the start.sh file and replace the source with source code shown below.
+   6. In the same window select the stop.sh file and edit the stop.sh file and replace the source with scripts shown as below and click FINISH.
+      - Start Script
+        ```sh
+        #/bin/bash
+        sudo systemctl start mssql-server
+        ```
+      - Stop Script
+        ```sh
+        #/bin/bash
+        sudo systemctl stop mssql-server
+        ```
+1. Add a SQL Server monitor resource
+   1. On Cluster Builder (Config Mode), in the tree view, right-click Monitors and then click Add Monitor Resource.
+   1. In the "Monitor Resource Definition" window, click **"Get License Info"**, for Type, select **"SQL Server monitor"** from the pull-down box. For Name, use the default (sqlserverw). Click Next.
+   1. On next window, click "Browse", select **"exec" resource** and click "OK". Click "Next".
+   1. Set the following parameters and click "Next".
+      - Monitor Level: Level 2 (monitoring by update/select)
+      - Database Name: testdb
+      - Server Name: localhost
+      - User Name: SA
+      - Password: Your Password
+      - Monitor Table Name: sqlwatch
+      - ODBC Driver Name: ODBC Driver 17 for SQL Server 
+   1. Click "Browse", select failover group and click "OK".
+   1. Click "Finish".
+1. Upload the cluster configuration.
 <!--
 		Adding a Service resource
 
