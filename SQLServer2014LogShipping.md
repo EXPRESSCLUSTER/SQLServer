@@ -1,4 +1,5 @@
-# SQL Server 2014 Log Shipping Cluster
+*UNDER CONSTRUCTION*
+# SQL Server Log Shipping Cluster
 * [Evaluation Environment](#evaluation-environment)
 
 ## Evaluation Environment
