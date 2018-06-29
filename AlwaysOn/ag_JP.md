@@ -1,3 +1,7 @@
+
+
+
+
 # 可用性グループクラスタ　クイック構築ガイド
 ## はじめに
 本ガイドでは、CLUSTERPRO X による SQL Server 2017 on Linux 可用性グループクラスタを構築する手順を記載します。  
@@ -30,7 +34,7 @@ CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterp
 	- 監視リソース
 		- genw-ActiveNode:  
 			フェイルオーバグループが起動しているサーバ（アクティブサーバ）の可用性レプリカの役割を監視する。
-		- genw-SatndbyNode:  
+		- genw-StandbyNode:  
 			フェイルオーバグループが起動していないサーバ（スタンバイサーバ）の可用性レプリカの役割を監視する。
 		- psw:  
 			全サーバの SQL Server サービスを監視する。
