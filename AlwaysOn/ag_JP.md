@@ -285,7 +285,7 @@ Linux リファレンスガイド
 			- 正常な戻り値: 0
 			- 回復動作: 回復対象に対してフェイルオーバ実行
 			- 回復対象: フェイルオーバグループ
-		- genw-SatndbyNode:
+		- genw-StandbyNode:
 			- 監視タイミング: 常時
 			- 監視を行うサーバを選択する: 全サーバ
 			- [genw.sh](https://github.com/Igaigasuru/EXPRESSCLUSTER/blob/master/scripts/AG%20cluster/Standby%20Node%20monitor%20genw.sh)
