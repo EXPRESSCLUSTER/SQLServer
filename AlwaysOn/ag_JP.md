@@ -41,7 +41,7 @@ CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterp
 
 ### システム要件
 - 全てのサーバと PingNP ターゲットは、お互いに IP アドレスで通信可能である。
-- SQL Server on Linux と EXPRESSCLUSTER X は全てのサーバにインストールされる。
+- SQL Server on Linux と CLUSTERPRO X は全てのサーバにインストールされる。
 - クライアントからプライマリレプリカへの接続には、必ず fip を使用し、サーバの実 IP アドレスは使用しない。
 - 可用性レプリカの操作は、必ず CLUSTERPRO X から行う。
 
