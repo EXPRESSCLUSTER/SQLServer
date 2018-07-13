@@ -18,7 +18,7 @@ CLUSTERPRO X の詳細については、[こちら](https://jpn.nec.com/clusterp
 	- PingNP ターゲットノード: 1台
 - ソフトウェア
 	- SQL Server 2017 on Linux
-	- EXPRESSCLUSTER X 3.3.5-1/4.0.0-1
+	-  X 3.3.5-1/4.0.0-1
 
 ### クラスタ構成
 - クラスタのプロパティ
