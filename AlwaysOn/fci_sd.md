@@ -34,8 +34,8 @@ This guide describes a way to build two nodes (active standby) SQL Server Always
 | Memory	| 2GB or more						| 512 MB or more		|
 | Disk 		| 1 physical disk<br>OS partition: 20GB or more space available(to include the installation of MSSQL Database Server)| 1 physical disk with 20 GB or more space available |
 | OS		| Linux	| Windows XP or later	|
-| Software	| Java 1.5(or later) enabled web browser	| Java 1.5(or later) enabled web browser	|
-| Network	| 2 100Mbit or faster Ethernet NIC	| 1 100Mbit or faster Ethernet NIC |
+| Software	| 	| Java 1.5(or later) enabled web browser	|
+| Network	| 100Mbit or faster Ethernet NIC x2	| 100Mbit or faster Ethernet NIC x1 |
 
 ### System Planning
 Review the requirements from the last section and then fill out the tables of the worksheet below. Use for reference in the following sections of this guide. See Appendix B for an example worksheet.
@@ -80,8 +80,8 @@ If necessary, install required hardware components and a supported OS as specifi
 ### Setup the Primary Server (Machine 1)
 1. Verify basic system boot and root login functionality and availability of required hardware components as specified in Chapter 2.
 2. Configure network interface names
-   1. Rename the network interface to be used for network communication with client machine to Public.
-   2. Rename the network interface to be used for internal EXPRESSCLUSTER X management and data mirroring network communication between servers to Interconnect.
+   1. Rename the network interface to be used for network communication with client machine to `Public`.
+   2. Rename the network interface to be used for internal EXPRESSCLUSTER X management and data mirroring network communication between servers to `Interconnect`.
    3. Configure Network
       1. In the `System` tab go to `Administration` further go to `Network`.
       2. In the Network Connections window, double-click Public.
