@@ -2,7 +2,7 @@
 This repository contains some articles describe how to create SQL Server cluster with EXPRESSCLUSTER.
 
 ## AlwaysOn
-Create SQL Server cluster with Availability Group (AG) or Failover Cluster Instance (FCI). For more detail, please check [AlwaysOn](https://github.com/EXPRESSCLUSTER/SQLServer/tree/master/AlwaysOn).
+Create SQL Server cluster with Availability Group (AG) or Failover Cluster Instance (FCI). For the detail, please check [AlwaysOn](https://github.com/EXPRESSCLUSTER/SQLServer/tree/master/AlwaysOn).
 
 ## SQL Server 2017
 
