@@ -1,4 +1,10 @@
 # SQL Server on Linux cluster Quick Start Guide
+## Reference
+### EXPRESSCLUSTER
+- https://www.nec.com/en/global/prod/expresscluster/en/support/manuals.html
+### MSSQL Server 2019 on Linux
+- https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-red-hat?view=sql-server-ver15
+- https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-mssql-conf?view=sql-server-ver15#datadir
 
 ## System configuration
 - Servers: 2 node with Mirror Disk
