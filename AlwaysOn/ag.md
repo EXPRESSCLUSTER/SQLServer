@@ -110,9 +110,9 @@ https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-red-hat
 
 ### Cofigure AG
 #### On all servers
-1. Edit "/etc/hostname" and define all servers hostname and IP addresses for Name Resolution.  
+1. Edit "/etc/hosts" and define all servers hostname and IP addresses for Name Resolution.  
 	```bat
-	# sudo vi /etc/hstname
+	# sudo vi /etc/hosts
 	```
 2. Enable AlwaysOn availability groups on each server and restart mssql-server.  
 	```bat
