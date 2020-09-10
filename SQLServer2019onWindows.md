@@ -219,18 +219,30 @@ This procedure shows how to upgrade clustered SQL Server to 2019 from previous v
 Please note that it does not include Edition upgrade.  
 Please refer SQL Server document for Upgrade path.  
 
-### Suspend monitoring and stop mirroring
+### Preparation
 #### On Primary Server
-1. (If you need) Backup database
 1. Start Cluster WebUI Operation Mode and go to [Status] tab
 1. Confirm that all status are normal
-1. Suspend all monitor resources on both the servers
-1. Goto [Mirror disks] tab
-1. Execute [Mirror break] for md resource
-1. Execute [Turn off access restriction] for md resource
+1. Confirm that failover group is active on Primary Server.
+1. Start Cluster WebUI Config Mode
+1. Change the following cluster settings:
+	- Cluster Properties
+		- Recovery tab
+			- Disable Recovery Action Caused by Monitor Recource Failure: Check
+	- Failover group Propertis
+		- Attribute tab
+			- Startup Attribute
+				- Manual Startup: Select
+1. Apply the cluster configuration
+1. Backup database
 
-### Upgrade SQL Server
-#### On both servers
+### Upgrade
+#### On Primary Server
+1. Start Cluster WebUI Operation Mode and go to [Status] tab
+1. Stop service service_SQLServer
+1. Shutdown Secondary Server
+	- **Note** Before upgrading SQL Server on Primary Server, please stop Secondary Server to stop data mirroring.  
+		If you don't stop it, SQL Server on Secondary Server may get into abnormal status for version inconsistency between SQL Server instance and version info in system database on Mirror Disk.
 1. Start SQL Server Installer and select as follows:
 	- Installation  
 		Select "Upgrade from a previous version of SQL Server"
@@ -251,12 +263,58 @@ Please refer SQL Server document for Upgrade path.
 		Confirm the instance name is correct
 	- Ready to Upgrade  
 		Upgrade
+1. Shutdown Primary Server
 
-- **Note** Please do NOT reboot the servers at this time
-
-#### On Primary Server
+#### On Secondary Server
+1. Power on Secondary Server
+1. Start Cluster WebUI Operation Mode and go to [Status] tab
+1. Confirm that Secondary Server status gets Online
+1. Goto [Mirror disks] tab
+1. Execute [Turn off access restriction] for md resource
+1. Start SQL Server Installer and select as follows:
+	- Installation  
+		Select "Upgrade from a previous version of SQL Server"
+	- Microsoft Update  
+		Default or as you like
+	- Product Updates  
+		Default or as you like
+	- Product Key  
+		Enter license key
+	- License Terms  
+		Accept
+	- Select Instance  
+		Select instance to be upgraded
+	- Select Features
+		- Database Engine Service: Check
+		- Shared Features: As you like
+	- Instance Configuration  
+		Confirm the instance name is correct
+	- Ready to Upgrade  
+		Upgrade
 1. Start Cluster WebUI Operation Mode and go to [Mirror disks] tab
 1. Execute [Turn on access restriction] for md resource
-1. Goto [Status] tab and resume all monitor resources on both the servers
-1. Confirm that Fast Recovery runs and completes
-1. (If you need) Reboot both servers
+1. Shutdown Secondary Server
+
+#### On both servers
+1. Power on both the servers
+
+#### On Primary Server
+1. Start Cluster WebUI Operation Mode and go to [Status] tab
+1. Confirm that both the servers status get Online
+1. Move to Cluster WebUI Config Mode
+1. Change the following cluster settings:
+	- Cluster Properties
+		- Recovery tab
+			- Disable Recovery Action Caused by Monitor Recource Failure: Unheck
+	- Failover group Propertis
+		- Attribute tab
+			- Startup Attribute
+				- Auto Startup: Select
+1. If you use SQL monitor resource, change the following cluster setting depending on your new ODBC version:
+	- SQL monitor resource Properties
+		- Monitor(special) tab
+			- ODBC Driver Name: Set depending on your new ODBC version
+1. Apply the cluster configuration
+1. Move to Cluster WebUI Operation Mode and go to [Status] tab
+1. Start failover group on Primary Server
+1. Confirm that Fast Recovery from Primary to Secondary runs
