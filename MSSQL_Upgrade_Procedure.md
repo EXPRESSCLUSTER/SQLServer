@@ -3,11 +3,13 @@
 This document has three solutions for upgrade MSSQL server in cluster environment.
 
 ## Contents
-[A) In the case that masterdb is stored on local disk.](#caseA)
+[A) In the case that masterdb is stored on local disk.](#casea)
 
-[B) In the case that masterdb is stored on Mirror Disk.](#caseB)
+[B) In the case that masterdb is stored on Mirror Disk.](#caseb)
 
-[C) In the case that All databases stored in Mirror Disk and no need to chang any configuration ECX.](#caseC)
+[C) In the case that All databases stored in Mirror Disk and no need to chang any configuration ECX.](#casec)
+
+<a id="casea"></a>
 
 ## A) In the case that masterdb is stored on local disk (*)
 
@@ -47,6 +49,8 @@ This document has three solutions for upgrade MSSQL server in cluster environmen
 	  -> Recovery tab
 	  -> Disable Recovery Action Caused by Monitor Recource Failure: Uncheck
 1. Apply the configuration.
+
+<a id="caseb"></a>
 
 ## B) In the case that masterdb is stored on Mirror Disk
 
@@ -112,6 +116,8 @@ This document has three solutions for upgrade MSSQL server in cluster environmen
 	  - Select "Manual Startup"
 	- Apply cluster configuration
     
+<a id="casec"></a>
+
 ## C) In the case that All databases stored in Mirror Disk and no need to chang any configuration ECX.
 1. Backup Database on Active Server.
 1. Confirm that cluster staus is normal and group is active on Primary Server.
