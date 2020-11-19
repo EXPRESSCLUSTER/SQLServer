@@ -42,7 +42,11 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 		- Cluster Partition: X drive
 		- Data Partition: E drive
 	- service1
+		- For SQL Server Instance service
 	- service2
+		- For SQL Server Agent service
+	- **Note**
+		- If you need to enable SQL Server Browser service, add one more service resource (service3)
 
 ## Setup
 This procedure shows how to setup SQL Server cluster by mirroring both SQL Server master database and user database.
@@ -83,7 +87,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	- Database Engine Configuration
 		- Server Coonfiguration
 			- As you like
-				- **Note** We recommend to set SA Acount with Mixed Mode or add Domain Account for Windows authentication because the database should be accessible from both Primary and Secondary Servers.
+				- **Note** We recommend to set Windows authentication and add domain account as Administrator because the database should be accessible from both Primary and Secondary Servers.
 		- Data Directories
 			- Data root directory:	E:\SQL\
 			- User database directory:	E:\SQL\MSSQL15.TEST\MSSQL\Data
@@ -102,6 +106,8 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 1. Confirm that files under E:\SQL folder is accessible
 1. Start SQL Server Installer and select as same as Primary Server but change Data Directories settings as follows:
 	- Database Engine Configuration
+		- Server Coonfiguration
+			- Set same authentication mode and same SA password and add same account as Administrator.
 		- **Data Directories**
 			- Data root directory:	C:\Program Files\Microsoft SQL Server\
 			- User database directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
