@@ -76,7 +76,6 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	- Feature Selection
 		- Database Engine Service: Check
 		- Shared Features: As you like
-			- **Note** We recommend to install SQL Client Connectivity SDK to enable sql command for maintenance.
 	- Instance Configuration  
 		Default or as you like
 	- Server Configuration
