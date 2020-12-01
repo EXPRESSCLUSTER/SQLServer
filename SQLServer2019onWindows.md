@@ -46,7 +46,7 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 
 ### Requirements
 - All Primary Server, Secondary Server and Client machine sould be reachable with IP address.
-- In order to use fip address, both servers should belong a same nework.
+- In order to use fip resource, both servers should belong a same nework.
 	- If each server belongs to a different network, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
 - Ports which EXPRESSCLUSTER requires should be opend.
 	- You can open ports by executing OpenPort.bat([X4.1](https://github.com/EXPRESSCLUSTER/Tools/blob/master/OpenPorts.bat)/[X4.2](https://github.com/EXPRESSCLUSTER/Tools/blob/master/OpenPorts_X42.bat)) on both servers
@@ -55,6 +55,7 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 	- Cluster Partition: 1GB, RAW (do not format this partition)
 	- **Note**
 		- It is not supported to mirror C: drive and please do NOT sprecify C: for Data Partition.
+		- Dynamic disk is not supported for Data Partition and Cluster Partition.
 		- Data on Secondary Server Data Partition will be removed for initial Mirror Disk synchroniation (Initial Recovery).
 
 ### Sample configuration
