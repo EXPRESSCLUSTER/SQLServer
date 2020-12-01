@@ -17,26 +17,35 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 	- EXPRESSCLUSTER X 4.0/4.1/4.2
 
 ```bat
-<LAN>
+<Public LAN>
  |
- |  +----------------------------+
- +--| Primary Server             |
- |  | - Windows Server 2019      |
- |  | - SQL Server 2019          |
- |  | - EXPRESSCLUSTER X 4       |
- |  +----------------------------+
- |                                
- |  +----------------------------+
- +--| Secondary Server           |
- |  | - Windows Server 2019      |
- |  | - SQL Server 2019          |
- |  | - EXPRESSCLUSTER X 4       |
- |  +----------------------------+
+ | <Private LAN>
+ |  |
+ |  |  +--------------------------------+
+ +-----| Primary Server                 |
+ |  |  |  Windows Server 2019           |
+ |  |  |  EXPRESSCLUSTER X 4.1/4.2      |
+ |  +--|  SQL Server 2019               |
+ |  |  +--------------------------------+
+ |  |
+ |  |  +--------------------------------+
+ +-----| Secondary Server               |
+ |  |  |  Windows Server 2019           |
+ |  |  |  EXPRESSCLUSTER X 4.1/4.2      |
+ |  +--|  SQL Server 2019               |
+ |  |  +--------------------------------+
+ |  |
+ |  |
+ |  |  +--------------------------------+
+ |  +--| Client machine                 |
+ |     +--------------------------------+
  |
+[Gateway]
+ :
 ```
 
 ### Requirements
-- Primary Server and Secondary Server sould be reachable with IP address.
+- All Primary Server, Secondary Server and Client machine sould be reachable with IP address.
 - In order to use fip address, both servers should belong a same nework.
 	- If each server belongs to a different network, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
 - Ports which EXPRESSCLUSTER requires should be opend.
@@ -50,7 +59,7 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 
 ### Sample configuration
 - Primary/Secondary Server
-	- OS: Windows Server 2016/2019
+	- OS: Windows Server 2019
 	- EXPRESSCLUSTER X: 4.1 or 4.2
 	- CPU: 2
 	- Memory: 8MB
