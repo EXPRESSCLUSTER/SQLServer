@@ -368,7 +368,7 @@ If EXPRESSCLUSTER Hybrid cluster is too expensive and manual failover/failback b
 		- Other: Default or as you like
 		- Click OK
 		- Confirm that all process completes successfully.
-		- For more details about each parameters, please see [Parameters](★)
+		- For more details about each parameters, please see [Parameters](https://github.com/EXPRESSCLUSTER/SQLServer/blob/master/SQLServer2019LogShipping.md#log-shipping-parameters)
 	- If you want to configure Log Shipping for multiple databases, do the same for other databases.
 
 ### 5. After Log Shipping Configuration
