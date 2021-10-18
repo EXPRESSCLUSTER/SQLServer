@@ -12,7 +12,6 @@ This article describes how to setup SQL Server 2005 Cluster with EXPRESSCLUSTER 
 - **Microsoft's support for Windows Server 2003 and SQL Server 2005 has already ended.**
 - System database (such as master, msdb) is saved on the local disk (C:\\).
 	- System database is not replicated to another node.
-- We tested the default instance (MSSQLSERVER) only.
 
 ## System configuration
 - Servers: 2 nodes with Mirror Disk
@@ -56,11 +55,11 @@ This article describes how to setup SQL Server 2005 Cluster with EXPRESSCLUSTER 
 		- Cluster Partition: E drive (17MB, RAW)
 		- Data Partition: F drive (The database is saved here)
 	- service_sql
-		- For SQL Server (MSSQLSERVER) service
+		- For SQL Server (InstanceName) service
 	- script_sql
 		- For database attachment/detachment
 	- service_sqlagent
-		- For SQL Server Agent (MSSQLSERVER) service
+		- For SQL Server Agent (InstanceName) service
 - monitor
 	- fipw
 	- mdw
@@ -83,7 +82,7 @@ This article describes how to setup SQL Server 2005 Cluster with EXPRESSCLUSTER 
 	- **SQL Server Database Services** is mandatory.
 	- It is recommended that the entire feature of **Client Components** in **Advance** is installed as client's database connection method.
 - Instance Name
-	- **Default instance**
+	- **Default instance** or specify the instance name as you like.
 - Service Account
 	- **Use the built-in System account: Local system**
 - Authentication Mode
@@ -98,9 +97,13 @@ This article describes how to setup SQL Server 2005 Cluster with EXPRESSCLUSTER 
 	- e.g.: *F:\\sql\\data*
 1. Login to SQL Server on Command Prompt.
 	
-	e.g.
+	e.g. Deault Instance
 	```
 	> sqlcmd /S localhost /U sa /P password
+	```
+	e.g. Named Instance
+	```
+	> sqlcmd /S localhost\InstanceName /U sa /P password
 	```
 1. Create a database on the md.
 
@@ -110,13 +113,13 @@ This article describes how to setup SQL Server 2005 Cluster with EXPRESSCLUSTER 
 	2> on PRIMARY
 	3> (
 	4> NAME= 'testdb_Data',
-	5> FILENAME='Y:¥sql¥data¥testdb_Data.MDF',
+	5> FILENAME='F:¥sql¥data¥testdb_Data.MDF',
 	6> SIZE=10
 	7> )
 	8> LOG ON
 	9> (
-	10> NAME='testdb_Log'
-	11> FILENAME='Y:¥sql¥data¥testdb_Log.LDF',
+	10> NAME='testdb_Log',
+	11> FILENAME='F:¥sql¥data¥testdb_Log.LDF',
 	12> SIZE=10
 	13> )
 	14> GO
@@ -149,55 +152,89 @@ You need to create the scripts for attach/detach of database.
 ### Create EXPRESSCLUSTER resources
 1. Stop all SQL Server services on Service Manager on both nodes.
 1. Add the service resource for SQL Server service.
-	- Service Name: SQL Server (MSSQLSERVER)
+	- Service Name: SQL Server (InstanceName)
 1. Add the script resource for database attachment/detachment.
 	- Dependent Resources: The service resouce for SQL Server service.
 	- start.bat
 
-		e.g.
-		```
+		e.g. Default Instance
+		```bat
 		.
 		.
 		rem *************
 		rem Routine procedure
 		rem *************
-		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" /Usa /Ppassword /i c:\mssql\ACT.SQL /o c:\mssql\ACT.LOG
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\ACT.SQL -o c:\mssql\ACT.LOG -S .
 		.
 		.
 		rem *************
 		rem Starting applications/services and recovering process after failover
 		rem *************
-		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" /Usa /Ppassword /i c:\mssql\ACT.SQL /o c:\mssql\ACT.LOG
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\ACT.SQL -o c:\mssql\ACT.LOG -S .
+		.
+		.
+		```
+		e.g. Named Instance
+		```bat
+		.
+		.
+		rem *************
+		rem Routine procedure
+		rem *************
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\ACT.SQL -o c:\mssql\ACT.LOG -S .\InstanceName
+		.
+		.
+		rem *************
+		rem Starting applications/services and recovering process after failover
+		rem *************
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\ACT.SQL -o c:\mssql\ACT.LOG -S .\InstanceName
 		.
 		.
 		```
 	- stop.bat
 		
-		e.g.
-		```
+		e.g. Default Instance
+		```bat
 		.
 		.
 		rem *************
 		rem Routine procedure
 		rem *************
-		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" /Usa /Ppassword /i c:\mssql\DEACT.SQL /o c:\mssql\DEACT.LOG
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\DEACT.SQL -o c:\mssql\DEACT.LOG -S .
 		.
 		.
 		rem *************
 		rem Starting applications/services and recovering process after failover
 		rem *************
-		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" /Usa /Ppassword /i c:\mssql\DEACT.SQL /o c:\mssql\DEACT.LOG
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\DEACT.SQL -o c:\mssql\DEACT.LOG -S .
+		.
+		.
+		```
+		e.g. Named Instance
+		```bat
+		.
+		.
+		rem *************
+		rem Routine procedure
+		rem *************
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\DEACT.SQL -o c:\mssql\DEACT.LOG -S .\InstanceName
+		.
+		.
+		rem *************
+		rem Starting applications/services and recovering process after failover
+		rem *************
+		"c:\Program Files\Microsoft SQL Server\90\Tools\Binn\OSQL.EXE" -U sa -P password -i c:\mssql\DEACT.SQL -o c:\mssql\DEACT.LOG -S .\InstanceName
 		.
 		.
 		```
 1. Add the service resource for SQL Server Agent service.
 	- Dependency Resources: The script resource for database attachment/detachment
-	- Service Name: SQL Server Agent (MSSQLSERVER)
+	- Service Name: SQL Server Agent (InstanceName)
 1. Add the SQL Server monitor resource. **(if you have EXPRESSCLUSTER X Database Agent Lincense)**
 	- Monitor Timing: Active
 		- Target Resource: The script resource for database attachment/detachment
 	- Database Name: testdb
-	- Instance Name: MSSQLSERVER
+	- Instance Name: MSSQLSERVER or Instance name
 	- User Name: SA
 	- Password: The password of SA
 	- Monitor Table Name: SQLWATCH
@@ -207,8 +244,14 @@ You need to create the scripts for attach/detach of database.
 #### On Primary Server
 1. Confirm that the failover group is active normally on the server
 1. Connect to SQL Server
+	
+	e.g. Deault Instance
 	```bat
-	> sqlcmd -S localhost -U sa -P password
+	> sqlcmd /S localhost /U sa /P password
+	```
+	e.g. Named Instance
+	```bat
+	> sqlcmd /S localhost\InstanceName /U sa /P password
 	```
 1. Create a test database and table and inser a value to it
 	```bat
@@ -241,8 +284,14 @@ You need to create the scripts for attach/detach of database.
 #### On Secondary Server
 1. Confirm that the failover group is active normally on the server
 1. Connect to SQL Server
+
+	e.g. Deault Instance
 	```bat
-	> sqlcmd -S localhost -U sa -P password
+	> sqlcmd /S localhost /U sa /P password
+	```
+	e.g. Named Instance
+	```bat
+	> sqlcmd /S localhost\InstanceName /U sa /P password
 	```
 1. Confirm that the database, table and its value is replicated
 	```bat
