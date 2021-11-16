@@ -11,10 +11,10 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 
 ## System configuration
 - Servers: 2 node with Mirror Disk
-- OS: Windows Server 2019
+- OS: Windows Server 2016/2019
 - SW:
 	- SQL Server 2019 Standard
-	- EXPRESSCLUSTER X 4.0/4.1/4.2
+	- EXPRESSCLUSTER X 4 (4.0/4.1/4.2/4.3)
 
 ```bat
 <Public LAN>
@@ -23,15 +23,15 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
  |  |
  |  |  +--------------------------------+
  +-----| Primary Server                 |
- |  |  |  Windows Server 2019           |
- |  |  |  EXPRESSCLUSTER X 4.1/4.2      |
+ |  |  |  Windows Server 2016/2019      |
+ |  |  |  EXPRESSCLUSTER X 4            |
  |  +--|  SQL Server 2019               |
  |  |  +--------------------------------+
  |  |
  |  |  +--------------------------------+
  +-----| Secondary Server               |
- |  |  |  Windows Server 2019           |
- |  |  |  EXPRESSCLUSTER X 4.1/4.2      |
+ |  |  |  Windows Server 2016/2019      |
+ |  |  |  EXPRESSCLUSTER X 4            |
  |  +--|  SQL Server 2019               |
  |  |  +--------------------------------+
  |  |
