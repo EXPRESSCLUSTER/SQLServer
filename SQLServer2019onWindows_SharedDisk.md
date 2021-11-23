@@ -374,7 +374,7 @@ This procedure shows how to upgrade clustered SQL Server version to 2019 from pr
 1. Confirm that failover group is active on the server and the following resources are Offline:
 	- service_SQLAgent resource
 	- service_SQLServer resource.
-1. Check Upgraded SQL Server Instance is started normally:
+1. Confirm that Upgraded SQL Server Instance is started normally:
 	1. Start SQL Server Configuration Manager.
 	1. Select [SQL Server Services] at the left tree.
 	1. Right click [SQL Server (\<Instance name\>)] and select [Start].
@@ -410,7 +410,7 @@ This procedure shows how to upgrade clustered SQL Server version to 2019 from pr
 			1. Go to [Security] tab.
 			1. Click [Edit] -> [Add] and add SQL Server Instance service login account.
 			1. Check [Full Control] and click [OK].
-1. Check the SQL Server Instance is started normally with replaced Data root directory:
+1. Confirm that the SQL Server Instance is started normally with replaced Data root directory:
 	1. Start SQL Server Configuration Manager.
 	1. Select [SQL Server Services] at the left tree.
 	1. Right click [SQL Server (\<Instance name\>)] and select [Start].
@@ -460,7 +460,7 @@ This procedure shows how to upgrade clustered SQL Server version to 2019 from pr
 1. Confirm that failover group is active on the server and the following resources are Offline:
 	- service_SQLAgent resource
 	- service_SQLServer resource.
-1. Check Upgraded SQL Server Instance is started normally:
+1. Confirm that the Upgraded SQL Server Instance is started normally:
 	1. Start SQL Server Configuration Manager.
 	1. Select [SQL Server Services] at the left tree.
 	1. Right click [SQL Server (\<Instance name\>)] and select [Start].
