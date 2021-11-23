@@ -313,7 +313,7 @@ This procedure shows how to upgrade clustered SQL Server version to 2019 from pr
 	1. Change the following cluster settings to avoid failover by monitor errors while upgrading:
 		- Cluster Properties
 			- Recovery tab
-				- Disable Recovery Action Caused by Monitor Recource Failure: Unheck
+				- Disable Recovery Action Caused by Monitor Recource Failure: Check
 	1. Apply the cluster configuration.
 1. Backup database.
 
@@ -486,7 +486,7 @@ This procedure shows how to upgrade clustered SQL Server version to 2019 from pr
 	1. Change the following cluster settings to avoid failover by monitor errors while upgrading:
 		- Cluster Properties
 			- Recovery tab
-				- Disable Recovery Action Caused by Monitor Recource Failure: Unheck
+				- Disable Recovery Action Caused by Monitor Recource Failure: Uncheck
 	1. Apply the cluster configuration.
 1. Remove the following folders:
 	- E:\SQL_2014
