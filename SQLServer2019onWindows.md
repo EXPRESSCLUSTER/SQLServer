@@ -142,69 +142,30 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			- As you like
 				- **Note** We recommend to set Windows authentication and add domain account as Administrator because the database should be accessible from both Primary and Secondary Servers.
 		- Data Directories
-			- Data root directory:	C:\Program Files\Microsoft SQL Server\
-			- User database directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
-			- User database log directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
-			- Backup directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Backup
+			- Data root directory:	E:\SQL\
+			- User database directory:	E:\SQL\MSSQL15.TEST\MSSQL\Data
+			- User database log directory:	E:\SQL\MSSQL15.TEST\MSSQL\Data
+			- Backup directory:	E:\SQL\MSSQL15.TEST\MSSQL\Backup
 	- Ready to install  
 		Install
-		
-1. Start SQL Server Configuration Manager
-1. Select [SQL Server Services] at the left tree
-1. Right click [SQL Server (<instance name>)] and select [Properties]
-1. Goto [Setup Parameters] tab and edit existing parameters as follow:
-	- Before:
-		- -dC:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\DATA\master.md
-		- -lC:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
-	- After:
-		- -dE:\SQL\MSSQL15.TEST\MSSQL\DATA\master.md
-		- -lE:\SQL\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
-	
 1. Check SQL Server is installed normally.
 	1. Start Windows Service Manager and start SQL Server service.
 	1. Confirm that SQL Server service status becomes running.
 	1. Stop SQL Server service
 1. Move failover group to Secondary Server
 
-#### On Secondary Server
+#### On Secondary Server Server
 1. Confirm that the failover group is active on the server
-1. Create a folder on Mirror Disk  
-	```bat
-	e.g.) E:\SQL
-	```
-1. Start SQL Server Installer and select as follows:
-	- Installation  
-		Select "New SQL Server stand-alone installation or add features to an existing installaion"
-	- Microsift Update  
-		Default or as you like
-	- Product Updates  
-		Default or as you like
-	- Product Key  
-		Enter license key
-	- License Terms  
-		Accept
-	- Feature Selection
-		- Database Engine Service: Check
-		- Shared Features: As you like
-	- Instance Configuration  
-		Default or as you like
-	- Server Configuration
-		- Service Accounts
-			- SQL Server Agent:	Manual
-			- SQL Server Database Engine:	Manual
-			- SQL Server Browser:	As you like
+1. Confirm that files under E:\SQL folder is accessible
+1. Start SQL Server Installer and select as same as Primary Server but change Data Directories settings as follows:
 	- Database Engine Configuration
 		- Server Coonfiguration
-			- As you like
-				- **Note** We recommend to set Windows authentication and add domain account as Administrator because the database should be accessible from both Primary and Secondary Servers.
-		- Data Directories
+			- Set same authentication mode and same SA password and add same account as Administrator.
+		- **Data Directories**
 			- Data root directory:	C:\Program Files\Microsoft SQL Server\
 			- User database directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
 			- User database log directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
 			- Backup directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Backup
-	- Ready to install  
-		Install
-		
 1. Start SQL Server Configuration Manager
 1. Select [SQL Server Services] at the left tree
 1. Right click [SQL Server (<instance name>)] and select [Properties]
@@ -215,8 +176,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	- After:
 		- -dE:\SQL\MSSQL15.TEST\MSSQL\DATA\master.md
 		- -lE:\SQL\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
-	
-1. Check SQL Server is function normally.
+1. Check SQL Server is installed normally.
 	1. Start Windows Service Manager and start SQL Server service.
 	1. Confirm that SQL Server service status becomes running.
 	1. Stop SQL Server service
