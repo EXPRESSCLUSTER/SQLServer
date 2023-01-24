@@ -1,4 +1,4 @@
-# SQL Server on Windows cluster Quick Start Guide
+# SQL Server 2022 on Windows cluster Quick Start Guide
 This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mirror Disk configuratoin.
 
 ## Reference
