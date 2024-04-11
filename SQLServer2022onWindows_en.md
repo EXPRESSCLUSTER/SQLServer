@@ -1,20 +1,20 @@
-# SQL Server on Windows cluster Quick Start Guide
-This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mirror Disk configuratoin.
+# SQL Server 2022 on Windows cluster Quick Start Guide
+This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mirror Disk configuratoin.
 
 ## Reference
 
 ### EXPRESSCLUSTER
 - https://www.nec.com/en/global/prod/expresscluster/en/support/manuals.html
-### MSSQL Server 2019 on Windows
-- https://docs.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-installation-wizard-setup?view=sql-server-ver15
-- https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-sql-server-using-the-installation-wizard-setup?view=sql-server-ver15
+### MSSQL Server 2022 on Windows
+- https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-installation-wizard-setup?view=sql-server-ver16
+- https://learn.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-sql-server-using-the-installation-wizard-setup?view=sql-server-ver16
 
-## System configuration
+## Sample system configuration
 - Servers: 2 node with Mirror Disk
-- OS: Windows Server 2016/2019
+- OS: Windows Server 2022
 - SW:
-	- SQL Server 2019 Standard
-	- EXPRESSCLUSTER X 4 (4.0/4.1/4.2/4.3)
+	- SQL Server 2022 Standard
+	- EXPRESSCLUSTER X 5 (5.0)
 
 ```bat
 <Public LAN>
@@ -23,16 +23,16 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
  |  |
  |  |  +--------------------------------+
  +-----| Primary Server                 |
- |  |  |  Windows Server 2016/2019      |
- |  |  |  EXPRESSCLUSTER X 4            |
- |  +--|  SQL Server 2019               |
+ |  |  |  Windows Server 2022           |
+ |  |  |  EXPRESSCLUSTER X 5            |
+ |  +--|  SQL Server 2022               |
  |  |  +--------------------------------+
  |  |
  |  |  +--------------------------------+
  +-----| Secondary Server               |
- |  |  |  Windows Server 2016/2019      |
- |  |  |  EXPRESSCLUSTER X 4            |
- |  +--|  SQL Server 2019               |
+ |  |  |  Windows Server 2022           |
+ |  |  |  EXPRESSCLUSTER X 5            |
+ |  +--|  SQL Server 2022               |
  |  |  +--------------------------------+
  |  |
  |  |
@@ -49,7 +49,7 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 - In order to use fip resource, both servers should belong a same nework.
 	- If each server belongs to a different network, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
 - Ports which EXPRESSCLUSTER requires should be opend.
-	- You can open ports by executing OpenPort.bat([X4.1](https://github.com/EXPRESSCLUSTER/Tools/blob/master/OpenPorts.bat)/[X4.2](https://github.com/EXPRESSCLUSTER/Tools/blob/master/OpenPorts_X42.bat)) on both servers
+	- You can find which port will be used by EXPRESSCLUSTER in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide] (https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
 - 2 partitions are required for Mirror Disk Data Partition and Cluster Partition.
 	- Data Partition: Depends on mirrored data size (NTFS)
 	- Cluster Partition: 1GB, RAW (do not format this partition)
@@ -60,8 +60,8 @@ This article shows how to setup SQL Server 2019 Cluster with EXPRESSCLUSTER X Mi
 
 ### Sample configuration
 - Primary/Secondary Server
-	- OS: Windows Server 2019
-	- EXPRESSCLUSTER X: 4.1 or 4.2
+	- OS: Windows Server 2022
+	- EXPRESSCLUSTER X: 5.0
 	- CPU: 2
 	- Memory: 8MB
 	- Disk
@@ -273,107 +273,28 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	```
 1. Move the failover group to the other server
 
-## Upgrade SQL Server version
-This procedure shows how to upgrade clustered SQL Server to 2019 from previous version (e.g. 2017).  
-Please note that it does not include Edition upgrade.  
-Please refer SQL Server document for Upgrade path.  
-
-### Preparation
-#### On Primary Server
-1. Start Cluster WebUI Operation Mode and go to [Status] tab
-1. Confirm that all status are normal
-1. Confirm that failover group is active on Primary Server.
+### (Option) Add SQL Server monitor resource
+1. Confirm that a database which should be monitored is already created.
+1. Register EXPRESSCLUSTER X Database Agent license to each cluster node.
 1. Start Cluster WebUI Config Mode
-1. Change the following cluster settings:
-	- Cluster Properties
-		- Recovery tab
-			- Disable Recovery Action Caused by Monitor Recource Failure: Check
-	- Failover group Propertis
-		- Attribute tab
-			- Startup Attribute
-				- Manual Startup: Select
-1. Apply the cluster configuration
-1. Backup database
-
-### Upgrade
-#### On Primary Server
-1. Start Cluster WebUI Operation Mode and go to [Status] tab
-1. Stop service service_SQLServer
-1. Shutdown Secondary Server
-	- **Note** Before upgrading SQL Server on Primary Server, please stop Secondary Server to stop data mirroring.  
-		If you don't stop it, SQL Server on Secondary Server may get into abnormal status for version inconsistency between SQL Server instance and version info in system database on Mirror Disk.
-1. Start SQL Server Installer and select as follows:
-	- Installation  
-		Select "Upgrade from a previous version of SQL Server"
-	- Microsoft Update  
-		Default or as you like
-	- Product Updates  
-		Default or as you like
-	- Product Key  
-		Enter license key
-	- License Terms  
-		Accept
-	- Select Instance  
-		Select instance to be upgraded
-	- Select Features
-		- Database Engine Service: Check
-		- Shared Features: As you like
-	- Instance Configuration  
-		Confirm the instance name is correct
-	- Ready to Upgrade  
-		Upgrade
-1. Shutdown Primary Server
-
-#### On Secondary Server
-1. Power on Secondary Server
-1. Start Cluster WebUI Operation Mode and go to [Status] tab
-1. Confirm that Secondary Server status gets Online
-1. Goto [Mirror disks] tab
-1. Execute [Turn off access restriction] for md resource
-1. Start SQL Server Installer and select as follows:
-	- Installation  
-		Select "Upgrade from a previous version of SQL Server"
-	- Microsoft Update  
-		Default or as you like
-	- Product Updates  
-		Default or as you like
-	- Product Key  
-		Enter license key
-	- License Terms  
-		Accept
-	- Select Instance  
-		Select instance to be upgraded
-	- Select Features
-		- Database Engine Service: Check
-		- Shared Features: As you like
-	- Instance Configuration  
-		Confirm the instance name is correct
-	- Ready to Upgrade  
-		Upgrade
-1. Start Cluster WebUI Operation Mode and go to [Mirror disks] tab
-1. Execute [Turn on access restriction] for md resource
-1. Shutdown Secondary Server
-
-#### On both servers
-1. Power on both the servers
-
-#### On Primary Server
-1. Start Cluster WebUI Operation Mode and go to [Status] tab
-1. Confirm that both the servers status get Online
-1. Move to Cluster WebUI Config Mode
-1. Change the following cluster settings:
-	- Cluster Properties
-		- Recovery tab
-			- Disable Recovery Action Caused by Monitor Recource Failure: Unheck
-	- Failover group Propertis
-		- Attribute tab
-			- Startup Attribute
-				- Auto Startup: Select
-1. If you use SQL monitor resource, change the following cluster setting depending on your new ODBC version:
-	- SQL monitor resource Properties
-		- Monitor(special) tab
-			- ODBC Driver Name: Set depending on your new ODBC version
-1. Apply the cluster configuration
-1. Move to Cluster WebUI Operation Mode and go to [Status] tab
-1. Start failover group on Primary Server
-1. Confirm that Fast Recovery from Primary to Secondary runs
+1. Add a SQL Server monitor resource to existing failover group as follows: 
+	- service1
+		- Info
+			- Type: service resource
+			- Name: sqlserverw
+		- Monitor(common)  
+			- Target Resource: service_SQLServer
+			- Wait Time to Start Monitoring: 10
+				- *Note*
+					- Monitoring should be delay to start because the target database takes some seconds to become accesible after the instance service is started. If 10 seconds is not enough in your environment, please edit this parameter.
+			- Other settings: Default or as you like
+		- Monitor(special)
+			- Monitor Level: As you like
+			- Database name: Enter the database name to be monitored
+			- Instance: Enter the SQL Server instance name
+			- User Name/Password: Enter a user name and its password which is accessible to the databae to be monitored
+			- Monitor Table Name: Default or as you like
+			- ODBC Driver Name: Select [ODBC Driver 17 for SQL Server]
+		- Recovery Action
+			- As you like
+1. Apply the configuration
