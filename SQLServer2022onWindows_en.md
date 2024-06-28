@@ -1,5 +1,5 @@
 # SQL Server 2022 on Windows cluster Quick Start Guide
-This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mirror Disk configuratoin.
+This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mirror Disk configuration.
 
 ## Reference
 
@@ -45,18 +45,18 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 ```
 
 ### Requirements
-- All Primary Server, Secondary Server and Client machine sould be reachable with IP address.
-- In order to use fip resource, both servers should belong a same nework.
+- All Primary Server, Secondary Server and Client machine should be reachable with IP address.
+- In order to use fip resource, both servers should belong a same network.
 	- If each server belongs to a different network, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
-- Ports which EXPRESSCLUSTER requires should be opend.
+- Ports which EXPRESSCLUSTER requires should be opened.
 	- You can find which port will be used by EXPRESSCLUSTER in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide] (https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
 - 2 partitions are required for Mirror Disk Data Partition and Cluster Partition.
 	- Data Partition: Depends on mirrored data size (NTFS)
 	- Cluster Partition: 1GB, RAW (do not format this partition)
 	- **Note**
-		- It is not supported to mirror C: drive and please do NOT sprecify C: for Data Partition.
+		- It is not supported to mirror C: drive and please do NOT specify C: for Data Partition.
 		- Dynamic disk is not supported for Data Partition and Cluster Partition.
-		- Data on Secondary Server Data Partition will be removed for initial Mirror Disk synchroniation (Initial Recovery).
+		- Data on Secondary Server Data Partition will be removed for initial Mirror Disk synchronization (Initial Recovery).
 
 ### Sample configuration
 - Primary/Secondary Server
@@ -118,8 +118,8 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	```
 1. Start SQL Server Installer and select as follows:
 	- Installation  
-		Select "New SQL Server stand-alone installation or add features to an existing installaion"
-	- Microsift Update  
+		Select "New SQL Server stand-alone installation or add features to an existing installation"
+	- Microsoft Update  
 		Default or as you like
 	- Product Updates  
 		Default or as you like
@@ -138,7 +138,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			- SQL Server Database Engine:	Manual
 			- SQL Server Browser:	As you like
 	- Database Engine Configuration
-		- Server Coonfiguration
+		- Server Configuration
 			- As you like
 				- **Note** We recommend to set Windows authentication and add domain account as Administrator because the database should be accessible from both Primary and Secondary Servers.
 		- Data Directories
@@ -154,12 +154,12 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	1. Stop SQL Server service
 1. Move failover group to Secondary Server
 
-#### On Secondary Server Server
+#### On Secondary Server
 1. Confirm that the failover group is active on the server
 1. Confirm that files under E:\SQL folder is accessible
 1. Start SQL Server Installer and select as same as Primary Server but change Data Directories settings as follows:
 	- Database Engine Configuration
-		- Server Coonfiguration
+		- Server Configuration
 			- Set same authentication mode and same SA password and add same account as Administrator.
 		- **Data Directories**
 			- Data root directory:	C:\Program Files\Microsoft SQL Server\
@@ -217,7 +217,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	```bat
 	> sqlcmd -S localhost -U <username> -P <password>
 	```
-1. Create a test database and table and inser a value to it
+1. Create a test database and table and insert a value to it
 	```bat
 	1> create database testdb
 	2> go
@@ -286,13 +286,13 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			- Target Resource: service_SQLServer
 			- Wait Time to Start Monitoring: 10
 				- *Note*
-					- Monitoring should be delay to start because the target database takes some seconds to become accesible after the instance service is started. If 10 seconds is not enough in your environment, please edit this parameter.
+					- Monitoring should be delay to start because the target database takes some seconds to become accessible after the instance service is started. If 10 seconds is not enough in your environment, please edit this parameter.
 			- Other settings: Default or as you like
 		- Monitor(special)
 			- Monitor Level: As you like
 			- Database name: Enter the database name to be monitored
 			- Instance: Enter the SQL Server instance name
-			- User Name/Password: Enter a user name and its password which is accessible to the databae to be monitored
+			- User Name/Password: Enter a user name and its password which is accessible to the database to be monitored
 			- Monitor Table Name: Default or as you like
 			- ODBC Driver Name: Select [ODBC Driver 17 for SQL Server]
 		- Recovery Action
