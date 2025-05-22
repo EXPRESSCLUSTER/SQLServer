@@ -14,9 +14,9 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 - OS: Windows Server 2022
 - SW:
 	- SQL Server 2022 Standard
-	- EXPRESSCLUSTER X 5 (5.0)
+	- EXPRESSCLUSTER X 5 (5.3)
 
-```bat
+```text
 <Public LAN>
  |
  | <Private LAN>
@@ -46,48 +46,49 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 
 ### Requirements
 - All Primary Server, Secondary Server and Client machine should be reachable with IP address.
-- In order to use fip resource, both servers should belong a same network.
-	- If each server belongs to a different network, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
-- Ports which EXPRESSCLUSTER requires should be opened.
-	- You can find which port will be used by EXPRESSCLUSTER in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide] (https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
-- 2 partitions are required for Mirror Disk Data Partition and Cluster Partition.
+- In order to use fip resource, both servers should belong to a same network.
+	- If each server belongs to different networks, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
+- The Ports which EXPRESSCLUSTER uses should be opened.
+	- The ports are described in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide] (https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
+- Mirror Disk resource requires 2 partitions, *Data Partition* and *Cluster Partition*.
 	- Data Partition: Depends on mirrored data size (NTFS)
-	- Cluster Partition: 1GB, RAW (do not format this partition)
+	- Cluster Partition: 1024MB (1GB), RAW (do not format this partition)
 	- **Note**
-		- It is not supported to mirror C: drive and please do NOT specify C: for Data Partition.
+		- It is not supported to mirror C: drive and do NOT specify C: drive for Data Partition.
 		- Dynamic disk is not supported for Data Partition and Cluster Partition.
-		- Data on Secondary Server Data Partition will be removed for initial Mirror Disk synchronization (Initial Recovery).
+		- Data Partition on Secondary Server will be overwritten on initial Mirror Disk synchronization (Initial Recovery).
 
 ### Sample configuration
 - Primary/Secondary Server
 	- OS: Windows Server 2022
-	- EXPRESSCLUSTER X: 5.0
+	- EXPRESSCLUSTER X: 5.3
 	- CPU: 2
-	- Memory: 8MB
+	- Memory: 8 GB
 	- Disk
 		- Disk0: System Drive
 			- C:
 		- Disk1: Mirror Disk
 			- X:
-				- Size: 1GB
+				- Size: 1 GB
 				- File system: RAW (do NOT format)
 			- E:
 				- Size: Depending on data size
 				- File system: NTFS
 - Required Licenses
-	- Core: For 4CPUs
-	- Replicator Option: For 2 nodes
-	- (Optional) Other Option licenses: For 2 nodes
+	- Core: 4 CPUs
+	- Replicator Option: 2 nodes
+	- (Optional) Database Server Agent: 2 nodes
+	- (Optional) Alert Service: 2 nodes
 
 - IP address  
 
-| |Public IP |Private IP |
-|-----------------|-----------------|-----------------|
-|Primary Server |10.1.1.11 |192.168.1.11 |
-|Secondary Server |10.1.1.12 |192.168.1.12 |
-|fip |10.1.1.21 |- |
-|Client |10.1.1.51 |- |
-|Gateway |10.1.1.1 |- |
+|                 |Public IP   |Private IP    |
+|-----------------|------------|--------------|
+|Primary Server   | 10.1.1.11  | 192.168.1.11 |
+|Secondary Server | 10.1.1.12  | 192.168.1.12 |
+|fip              | 10.1.1.10  | -            |
+|Client           | 10.1.1.51  | -            |
+|Gateway          | 10.1.1.254 | -            |
 
 ## Cluster configuration
 - failover group
@@ -112,12 +113,9 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 
 #### On Primary Server
 1. Confirm that the failover group is active on the server
-1. Create a folder on Mirror Disk  
-	```bat
-	e.g.) E:\SQL
-	```
+1. Create a folder on Mirror Disk - e.g. `E:\SQL`
 1. Start SQL Server Installer and select as follows:
-	- Installation  
+	- Installation
 		Select "New SQL Server stand-alone installation or add features to an existing installation"
 	- Microsoft Update  
 		Default or as you like
@@ -135,12 +133,12 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	- Server Configuration
 		- Service Accounts
 			- SQL Server Agent:	Manual
-			- SQL Server Database Engine:	Manual
+			- SQL Server Database Engine:	**Manual**
 			- SQL Server Browser:	As you like
 	- Database Engine Configuration
 		- Server Configuration
-			- As you like
-				- **Note** We recommend to set Windows authentication and add domain account as Administrator because the database should be accessible from both Primary and Secondary Servers.
+			- **Windows authentication mode** would be good for Domain environment. Add a domain account in the **Specify SQL Server administrators** 
+			- **Mixed Mode** would be good for Workgroup environment.
 		- Data Directories
 			- Data root directory:	E:\SQL\
 			- User database directory:	E:\SQL\MSSQL15.TEST\MSSQL\Data
@@ -160,7 +158,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 1. Start SQL Server Installer and select as same as Primary Server but change Data Directories settings as follows:
 	- Database Engine Configuration
 		- Server Configuration
-			- Set same authentication mode and same SA password and add same account as Administrator.
+			- Set same authentication mode and same SA password and add same account as SQL Server administrator.
 		- **Data Directories**
 			- Data root directory:	C:\Program Files\Microsoft SQL Server\
 			- User database directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
@@ -169,7 +167,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 1. Start SQL Server Configuration Manager
 1. Select [SQL Server Services] at the left tree
 1. Right click [SQL Server (<instance name>)] and select [Properties]
-1. Goto [Setup Parameters] tab and edit existing parameters as follow:
+1. Go to [Setup Parameters] tab and edit existing parameters as follow:
 	- Before:
 		- -dC:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\DATA\master.md
 		- -lC:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
