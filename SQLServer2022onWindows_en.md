@@ -5,12 +5,12 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 
 ### EXPRESSCLUSTER
 - https://www.nec.com/en/global/prod/expresscluster/en/support/manuals.html
-### MSSQL Server 2022 on Windows
+### SQL Server 2022 on Windows
 - https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-installation-wizard-setup?view=sql-server-ver16
 - https://learn.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-sql-server-using-the-installation-wizard-setup?view=sql-server-ver16
 
-## Sample system configuration
-- Servers: 2 node with Mirror Disk
+## Sample System Configuration
+- Servers: 2 nodes with Mirror Disk configuration
 - OS: Windows Server 2022
 - SW:
 	- SQL Server 2022 Standard
@@ -46,7 +46,7 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 
 ### Requirements
 - All Primary Server, Secondary Server and Client machine should be reachable with IP address.
-- In order to use fip resource, both servers should belong to a same network.
+- To use Floating IP (fip) resource, both servers must belong to the same network.
 	- If each server belongs to different networks, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
 - The Ports which EXPRESSCLUSTER uses should be opened.
 	- The ports are described in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide] (https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
@@ -75,7 +75,7 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 				- Size: Depending on data size
 				- File system: NTFS
 - Required Licenses
-	- Core: 4 CPUs
+	- Core: 4 CPUs in total (2 CPUs for Primary Server and 2 CPUs for Secondary Server)
 	- Replicator Option: 2 nodes
 	- (Optional) Database Server Agent: 2 nodes
 	- (Optional) Alert Service: 2 nodes
@@ -115,26 +115,26 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 1. Confirm that the failover group is active on the server
 1. Create a folder on Mirror Disk - e.g. `E:\SQL`
 1. Start SQL Server Installer and select as follows:
-	- Installation
+	- Installation  
 		Select "New SQL Server stand-alone installation or add features to an existing installation"
 	- Microsoft Update  
-		Default or as you like
+		Default or as preferred
 	- Product Updates  
-		Default or as you like
+		Default or as preferred
 	- Product Key  
 		Enter license key
 	- License Terms  
 		Accept
 	- Feature Selection
 		- Database Engine Service: Check
-		- Shared Features: As you like
+		- Shared Features: as preferred
 	- Instance Configuration  
-		Default or as you like
+		Default or as preferred
 	- Server Configuration
 		- Service Accounts
 			- SQL Server Agent:	Manual
 			- SQL Server Database Engine:	**Manual**
-			- SQL Server Browser:	As you like
+			- SQL Server Browser:	as preferred
 	- Database Engine Configuration
 		- Server Configuration
 			- **Windows authentication mode** would be good for Domain environment. Add a domain account in the **Specify SQL Server administrators** 
@@ -146,7 +146,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			- Backup directory:	E:\SQL\MSSQL15.TEST\MSSQL\Backup
 	- Ready to install  
 		Install
-1. Check SQL Server is installed normally.
+1. Verify that SQL Server is installed correctly.
 	1. Start Windows Service Manager and start SQL Server service.
 	1. Confirm that SQL Server service status becomes running.
 	1. Stop SQL Server service
@@ -174,7 +174,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	- After:
 		- -dE:\SQL\MSSQL15.TEST\MSSQL\DATA\master.md
 		- -lE:\SQL\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
-1. Check SQL Server is installed normally.
+1. Verify that SQL Server is installed correctly.
 	1. Start Windows Service Manager and start SQL Server service.
 	1. Confirm that SQL Server service status becomes running.
 	1. Stop SQL Server service
@@ -192,7 +192,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 		- Dependency  
 			Default
 		- Recovery Operation  
-			Default or as you like
+			Default or as preferred
 		- Details  
 			Click connect and select [SQL Server (<instance name>)]
 	- service2
@@ -202,7 +202,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 		- Dependency  
 			Uncheck [Follow the default dependency], select [service_SQLServer] and click [<Add]
 		- Recovery Operation  
-			Default or as you like
+			Default or as preferred
 		- Details  
 			Click connect and select [SQL Server Agent (<instance name>)]
 1. Apply the configuration
@@ -276,23 +276,23 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 1. Register EXPRESSCLUSTER X Database Agent license to each cluster node.
 1. Start Cluster WebUI Config Mode
 1. Add a SQL Server monitor resource to existing failover group as follows: 
-	- service1
+	- monitor_SQLServer
 		- Info
-			- Type: service resource
+			- Type: SQL Server monitor resource
 			- Name: sqlserverw
 		- Monitor(common)  
 			- Target Resource: service_SQLServer
 			- Wait Time to Start Monitoring: 10
 				- *Note*
-					- Monitoring should be delay to start because the target database takes some seconds to become accessible after the instance service is started. If 10 seconds is not enough in your environment, please edit this parameter.
-			- Other settings: Default or as you like
+					- Monitoring should be delayed to start because the target database takes some seconds to become accessible after the instance service is started. If 10 seconds is not enough in your environment, double this parameter.
+			- Other settings: Default or as preferred
 		- Monitor(special)
-			- Monitor Level: As you like
-			- Database name: Enter the database name to be monitored
-			- Instance: Enter the SQL Server instance name
+			- Monitor Level: as preferred
+			- Database name: Enter the database name to be monitored (e.g `testdb`)
+			- Instance: Enter the SQL Server instance name (e.g `MSSQLSERVER`, `SQLEXPRESS`)
 			- User Name/Password: Enter a user name and its password which is accessible to the database to be monitored
-			- Monitor Table Name: Default or as you like
+			- Monitor Table Name: Default or as preferred
 			- ODBC Driver Name: Select [ODBC Driver 17 for SQL Server]
 		- Recovery Action
-			- As you like
+			- as preferred
 1. Apply the configuration
