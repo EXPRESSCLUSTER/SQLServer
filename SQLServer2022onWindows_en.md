@@ -75,10 +75,10 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 				- Size: Depending on data size
 				- File system: NTFS
 - Required Licenses
-	- Core: 4 CPUs in total (2 CPUs for Primary Server and 2 CPUs for Secondary Server)
-	- Replicator Option: 2 nodes
-	- (Optional) Database Server Agent: 2 nodes
-	- (Optional) Alert Service: 2 nodes
+	- EXPRESSCLUSTER X: 4 CPUs in total (2 CPUs for Primary Server and 2 CPUs for Secondary Server)
+	- EXPRESSCLUSTER X Replicator: 2 nodes
+	- EXPRESSCLUSTER X Database Server Agent: 2 nodes (Optional)
+	- EXPRESSCLUSTER X Alert Service: 2 nodes (Optional)
 
 - IP address  
 
@@ -137,13 +137,13 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			- SQL Server Browser:	as preferred
 	- Database Engine Configuration
 		- Server Configuration
-			- **Windows authentication mode** would be good for Domain environment. Add a domain account in the **Specify SQL Server administrators** 
+			- **Windows authentication mode** would be good for Domain environment. Add a domain account in the **Specify SQL Server administrators**
 			- **Mixed Mode** would be good for Workgroup environment.
 		- Data Directories
 			- Data root directory:	E:\SQL\
-			- User database directory:	E:\SQL\MSSQL15.TEST\MSSQL\Data
-			- User database log directory:	E:\SQL\MSSQL15.TEST\MSSQL\Data
-			- Backup directory:	E:\SQL\MSSQL15.TEST\MSSQL\Backup
+			- User database directory:	E:\SQL\MSSQL16.TEST\MSSQL\Data
+			- User database log directory:	E:\SQL\MSSQL16.TEST\MSSQL\Data
+			- Backup directory:	E:\SQL\MSSQL16.TEST\MSSQL\Backup
 	- Ready to install  
 		Install
 1. Verify that SQL Server is installed correctly.
@@ -161,19 +161,19 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			- Set same authentication mode and same SA password and add same account as SQL Server administrator.
 		- **Data Directories**
 			- Data root directory:	C:\Program Files\Microsoft SQL Server\
-			- User database directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
-			- User database log directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Data
-			- Backup directory:	C:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\Backup
+			- User database directory:	C:\Program Files\Microsoft SQL Server\MSSQL16.TEST\MSSQL\Data
+			- User database log directory:	C:\Program Files\Microsoft SQL Server\MSSQL16.TEST\MSSQL\Data
+			- Backup directory:	C:\Program Files\Microsoft SQL Server\MSSQL16.TEST\MSSQL\Backup
 1. Start SQL Server Configuration Manager
 1. Select [SQL Server Services] at the left tree
 1. Right click [SQL Server (<instance name>)] and select [Properties]
 1. Go to [Setup Parameters] tab and edit existing parameters as follow:
 	- Before:
-		- -dC:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\DATA\master.md
-		- -lC:\Program Files\Microsoft SQL Server\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
+		- -dC:\Program Files\Microsoft SQL Server\MSSQL16.TEST\MSSQL\DATA\master.md
+		- -lC:\Program Files\Microsoft SQL Server\MSSQL16.TEST\MSSQL\DATA\mastlog.ld
 	- After:
-		- -dE:\SQL\MSSQL15.TEST\MSSQL\DATA\master.md
-		- -lE:\SQL\MSSQL15.TEST\MSSQL\DATA\mastlog.ld
+		- -dE:\SQL\MSSQL16.TEST\MSSQL\DATA\master.md
+		- -lE:\SQL\MSSQL16.TEST\MSSQL\DATA\mastlog.ld
 1. Verify that SQL Server is installed correctly.
 	1. Start Windows Service Manager and start SQL Server service.
 	1. Confirm that SQL Server service status becomes running.
@@ -184,7 +184,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 
 #### On Primary Server
 1. Start Cluster WebUI Config Mode
-1. Add resources to existing failover group as follows: 
+1. Add resources to existing failover group as follows:
 	- service1
 		- Info
 			- Type: service resource
@@ -195,7 +195,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 			Default or as preferred
 		- Details  
 			Click connect and select [SQL Server (<instance name>)]
-	- service2
+	- service2 (optional)
 		- Info
 			- Type: service resource
 			- Name: service_SQLAgent
@@ -275,7 +275,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 1. Confirm that a database which should be monitored is already created.
 1. Register EXPRESSCLUSTER X Database Agent license to each cluster node.
 1. Start Cluster WebUI Config Mode
-1. Add a SQL Server monitor resource to existing failover group as follows: 
+1. Add a SQL Server monitor resource to existing failover group as follows:
 	- monitor_SQLServer
 		- Info
 			- Type: SQL Server monitor resource
