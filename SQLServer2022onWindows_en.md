@@ -46,17 +46,18 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 
 ### Requirements
 - All Primary Server, Secondary Server and Client machine should be reachable with IP address.
-- To use Floating IP (fip) resource, both servers must belong to the same network.
+- To use Floating IP (fip) resource, both servers must belong to the same network address.
 	- If each server belongs to different networks, you can use ddns resource with [Dynamic DNS Server](https://github.com/EXPRESSCLUSTER/Tips/blob/master/ddnsPreparation.md) instead of fip address.
 - The Ports which EXPRESSCLUSTER uses should be opened.
-	- The ports are described in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide] (https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
+	- The ports are described in [EXPRESSCLUSTER X 5.0 for Windows Getting Started Guide](https://docs.nec.co.jp/sites/default/files/minisite/static/284b1dba-b9a1-4905-bcbf-e8de2265c9b0/ecx_x50_windows_en/W50_SG_EN/W_SG.html#communication-port-number)
 - Mirror Disk resource requires 2 partitions, *Data Partition* and *Cluster Partition*.
-	- Data Partition: Depends on mirrored data size (NTFS)
-	- Cluster Partition: 1024MB (1GB), RAW (do not format this partition)
-	- **Note**
-		- It is not supported to mirror C: drive and do NOT specify C: drive for Data Partition.
-		- Dynamic disk is not supported for Data Partition and Cluster Partition.
-		- Data Partition on Secondary Server will be overwritten on initial Mirror Disk synchronization (Initial Recovery).
+	- Data Partition: Prepare the partition according to the data size to be mirrored. (NTFS)
+	- Cluster Partition: Prepare 1GB RAW partition (do not format this partition.)
+
+	**Note:**
+	- It is not supported to mirror C: drive and do NOT specify C: drive for Data Partition.
+	- Dynamic disk is not supported for Data Partition and Cluster Partition.
+	- Data Partition on Secondary Server will be overwritten on initial Mirror Disk synchronization (Initial Recovery).
 
 ### Sample configuration
 - Primary/Secondary Server
@@ -77,7 +78,7 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 - Required Licenses
 	- EXPRESSCLUSTER X: 4 CPUs in total (2 CPUs for Primary Server and 2 CPUs for Secondary Server)
 	- EXPRESSCLUSTER X Replicator: 2 nodes
-	- EXPRESSCLUSTER X Database Server Agent: 2 nodes (Optional)
+	- EXPRESSCLUSTER X Database Agent: 2 nodes (Optional)
 	- EXPRESSCLUSTER X Alert Service: 2 nodes (Optional)
 
 - IP address  
@@ -100,8 +101,9 @@ This article shows how to setup SQL Server 2022 Cluster with EXPRESSCLUSTER X Mi
 		- For SQL Server Instance service
 	- service2
 		- For SQL Server Agent service
-	- **Note**
-		- If you need to enable SQL Server Browser service, add one more service resource (service3)
+
+	**Note:**
+	If you need to enable SQL Server Browser service, add one more service resource (service3)
 
 ## Setup
 This procedure shows how to setup SQL Server cluster by mirroring both SQL Server master database and user database.
@@ -118,23 +120,23 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	- Installation  
 		Select "New SQL Server stand-alone installation or add features to an existing installation"
 	- Microsoft Update  
-		Default or as preferred
+		Default or as required
 	- Product Updates  
-		Default or as preferred
+		Default or as required
 	- Product Key  
 		Enter license key
 	- License Terms  
 		Accept
 	- Feature Selection
 		- Database Engine Service: Check
-		- Shared Features: as preferred
+		- Shared Features: as required
 	- Instance Configuration  
-		Default or as preferred
+		Default or as required
 	- Server Configuration
 		- Service Accounts
 			- SQL Server Agent:	Manual
 			- SQL Server Database Engine:	**Manual**
-			- SQL Server Browser:	as preferred
+			- SQL Server Browser:	as required
 	- Database Engine Configuration
 		- Server Configuration
 			- **Windows authentication mode** would be good for Domain environment. Add a domain account in the **Specify SQL Server administrators**
@@ -192,7 +194,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 		- Dependency  
 			Default
 		- Recovery Operation  
-			Default or as preferred
+			Default or as required
 		- Details  
 			Click connect and select [SQL Server (<instance name>)]
 	- service2 (optional)
@@ -202,7 +204,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 		- Dependency  
 			Uncheck [Follow the default dependency], select [service_SQLServer] and click [<Add]
 		- Recovery Operation  
-			Default or as preferred
+			Default or as required
 		- Details  
 			Click connect and select [SQL Server Agent (<instance name>)]
 1. Apply the configuration
@@ -216,7 +218,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	> sqlcmd -S localhost -U <username> -P <password>
 	```
 1. Create a test database and table and insert a value to it
-	```bat
+	```sql
 	1> create database testdb
 	2> go
 	1> use testdb
@@ -231,20 +233,20 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	2> go
 	```
 1. Confirm the value is inserted
-	```bat
+	```sql
 	1> select * from testtb
 	2> go
 	id          name
 	----------- --------------------
-          0 Kurara
+              0 Kurara
 
 	(1 rows affected)
 	```
 1. Exit from the database
-	```bat
+	```sql
 	1> quit
-1. Move the failover group to Secondary Server
 	```
+1. Move the failover group to Secondary Server
 
 #### On Secondary Server
 1. Confirm that the failover group is active normally on the server
@@ -253,7 +255,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	> sqlcmd -S localhost -U SA -P <password>
 	```
 1. Confirm that the database, table and its value is replicated
-	```bat
+	```sql
 	1> use testdb
 	2> go
 	Changed database context to 'testdb'.
@@ -266,7 +268,7 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 	(1 rows affected)
 	```
 1. Exit from the database
-	```bat
+	```sql
 	1> quit
 	```
 1. Move the failover group to the other server
@@ -283,16 +285,18 @@ Please refer [Basic Cluster Setup](https://github.com/EXPRESSCLUSTER/BasicCluste
 		- Monitor(common)  
 			- Target Resource: service_SQLServer
 			- Wait Time to Start Monitoring: 10
-				- *Note*
-					- Monitoring should be delayed to start because the target database takes some seconds to become accessible after the instance service is started. If 10 seconds is not enough in your environment, double this parameter.
-			- Other settings: Default or as preferred
+
+				**Note:**
+				Monitoring should be delayed to start because the target database takes some seconds to become accessible after the instance service is started. If 10 seconds is not enough in your environment, double this parameter.
+
+			- Other settings: Default or as required
 		- Monitor(special)
-			- Monitor Level: as preferred
+			- Monitor Level: as required
 			- Database name: Enter the database name to be monitored (e.g `testdb`)
 			- Instance: Enter the SQL Server instance name (e.g `MSSQLSERVER`, `SQLEXPRESS`)
 			- User Name/Password: Enter a user name and its password which is accessible to the database to be monitored
-			- Monitor Table Name: Default or as preferred
+			- Monitor Table Name: Default or as required
 			- ODBC Driver Name: Select [ODBC Driver 17 for SQL Server]
 		- Recovery Action
-			- as preferred
+			- as required
 1. Apply the configuration
